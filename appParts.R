@@ -1,15 +1,15 @@
 #   ____________________________________________________________________________
-#   Neighborhood Browser                                                    ####
+#   Carpark Browser                                                    ####
 
 neighborhoodDescription <- function() {
     tagList(
         div(class = "container",
-            h1("Neighborhood Browser", class = "title fit-h1"),
-            p("You are new to New York City or real estate investment? Use Intelligentsia's neighborhood browser to identify pockets of opportunity in the city."),
-            p("Use the map to browse New York City's gentrifying census tracts. Click on any one of them to get more detailed information. Use the slider to show only the top k tracts."),
+            h1("Carpark Browser", class = "title fit-h1"),
+            p("Interested to find out nearest available carparks? Use this map-based browser to checkout the availability of carparks"),
+            p("Use the slider to show only the nearset k carparks."),
             fluidRow(
                 column(7,
-                       sliderInput("topK","Show top k census tracts",
+                       sliderInput("topK","Show nearest k carparks",
                                    10, max(pred$rank), 50, 10, width = "100%"),
                        leafletOutput("map", height = 600)
                        ),
