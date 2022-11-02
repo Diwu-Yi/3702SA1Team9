@@ -44,7 +44,7 @@ shinyUI(navbarPage(title = "Intelligentsia",
                    
                    # ----------------------------------
                    # tab panel 2 - Neighborhood Browser
-                   tabPanel("Neighborhood Browser",
+                   tabPanel("Avaible Carpark Browser",
                             neighborhoodDescription(),
                             includeHTML("scrollToTop.html")
                    ),
