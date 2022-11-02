@@ -6,7 +6,7 @@ neighborhoodDescription <- function() {
         div(class = "container",
             h1("Carpark Browser", class = "title fit-h1"),
             p("Interested to find out nearest available carparks? Use this map-based browser to checkout the availability of carparks"),
-            p("Use the slider to show only the nearset k carparks."),
+            p("Use the slider to show only the nearset k carparks YOYOYOYYOOOYYOYOYO."),
             fluidRow(
                 column(7,
                        sliderInput("topK","Show nearest k carparks",
