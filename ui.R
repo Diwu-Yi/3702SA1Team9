@@ -57,7 +57,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                    
                    # ----------------------------------
                    # tab panel 4 - About
-                   tabPanel("About",
+                   tabPanel("Hi",
                             includeHTML("about.html"),
                             shinyjs::useShinyjs(),
                             tags$head(
