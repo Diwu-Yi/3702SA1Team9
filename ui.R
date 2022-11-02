@@ -21,7 +21,7 @@ source("readData.R")
 #FF5850 red
 #436983 hipster blue
 
-shinyUI(navbarPage(title = "Intelligentsia",
+shinyUI(navbarPage(title = "IntelliShare",
                    theme = "style/style.css",
                    footer = includeHTML("footer.html"),
                    fluid = TRUE, 
