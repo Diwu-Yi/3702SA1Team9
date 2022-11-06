@@ -47,6 +47,9 @@ shinyUI(navbarPage(title = "IntelliShare",
                    tabPanel(div(img(src='images/car.png',
                                     style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
                                 HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Car Model Recommendation</span>')),
+                                class = "container",
+                                h1("Car Model Recommendation", class = "title fit-h1"),
+                                p("Let us help with your purhcase decisions for renting car!"),
                             sidebarLayout (
                               sidebarPanel(
                                 selectInput("Model",

@@ -1007,31 +1007,31 @@ shinyServer(function(input, output) {
     # generate pic for each model
     output$img <- renderUI({
       if(input$Model == "Kia Sorento"){            
-        img(src = "images/kiasorento.png",height=200,width=400)
+        img(src = "images/kiasorento.png",height=150,width=300)
       }
       else if(input$Model == "Jaguar F-TYPE"){
-        img(src = "images/jaguar.png",height=200,width=400)
+        img(src = "images/jaguar.png",height=150,width=300)
       }
       else if(input$Model == "Chevrolet Corvette Stingray"){
-        img(src = "images/corvette.png",height=200,width=400)
+        img(src = "images/corvette.png",height=150,width=300)
       }
       else if(input$Model == "MINI Cooper Countryman"){
-        img(src = "images/countryman.png",height=200,width=400)
+        img(src = "images/countryman.png",height=150,width=300)
       }
       else if(input$Model == "Subaru Outback"){
-        img(src = "images/outback.png",height=200,width=400)
+        img(src = "images/outback.png",height=150,width=300)
       }
       else if(input$Model == "Porsche 911"){
-        img(src = "images/porsche.png",height=200,width=400)
+        img(src = "images/porsche.png",height=150,width=300)
       }
       else if(input$Model == "Mercedes-benz C-Class"){
-        img(src = "images/Cclass.png",height=200,width=400)
+        img(src = "images/Cclass.png",height=150,width=300)
       }
       else if(input$Model == "MINI Cooper"){
-        img(src = "images/mini.png",height=200,width=400)
+        img(src = "images/mini.png",height=150,width=300)
       }
       else if(input$Model == "Jeep Wrangler JK"){
-        img(src = "images/JK.png",height=200,width=400)
+        img(src = "images/JK.png",height=150,width=300)
       }
     })
     
