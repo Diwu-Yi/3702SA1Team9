@@ -1069,73 +1069,73 @@ shinyServer(function(input, output) {
       }
     })
     # basic info tab
-    output$basicInfo <- renderDataTable({
+    output$basicInfo <- renderDataTable(rownames = FALSE,colnames="",{
       a1<-which(df()[,1]=="Basic Info")+1
       b1<-which(df()[,1]=="Body and Dimension")-1
       df() %>% slice(a1:b1)
     })
     # body and dimension tab
-    output$bodyDimension <- renderDataTable({
+    output$bodyDimension <- renderDataTable(rownames = FALSE,colnames="",{
       a2<-which(df()[,1]=="Body and Dimension")+1
       b2<-which(df()[,1]=="Engine and Transmission")-1
       df() %>% slice(a2:b2)
     })
     # engine and transmission tab
-    output$engineTrasmission <- renderDataTable({
+    output$engineTrasmission <- renderDataTable(rownames = FALSE,colnames="",{
       a3<-which(df()[,1]=="Engine and Transmission")+1
       b3<-which(df()[,1]=="Steering")-1
       df()%>% slice(a3:b3)
     })
     # steering tab
-    output$steering <- renderDataTable({
+    output$steering <- renderDataTable(rownames = FALSE,colnames="",{
       a4<-which(df()[,1]=="Steering")+1
       b4<-which(df()[,1]=="Tires")-1
       df()%>% slice(a4:b4)
     })
     # tires tab
-    output$tires <- renderDataTable({
+    output$tires <- renderDataTable(rownames = FALSE,colnames="",{
       a5<-which(df()[,1]=="Tires")+1
       b5<-which(df()[,1]=="Wheels")-1
       df() %>% slice(a5:b5)
     })
     # wheels tab
-    output$wheels <- renderDataTable({
+    output$wheels <- renderDataTable(rownames = FALSE,colnames="",{
       a6<-which(df()[,1]=="Wheels")+1
       b6<-which(df()[,1]=="Brake Systems")-1
       df() %>% slice(a6:b6)
     })
     # brake systems tab
-    output$brake <- renderDataTable({
+    output$brake <- renderDataTable(rownames = FALSE,colnames="",{
       a7<-which(df()[,1]=="Brake Systems")+1
       b7<-which(df()[,1]=="Suspensions")-1
       df() %>% slice(a7:b7)
     })
     # suspensions tab
-    output$suspensions <- renderDataTable({
+    output$suspensions <- renderDataTable(rownames = FALSE,colnames="",{
       a8<-which(df()[,1]=="Suspensions")+1
       b8<-which(df()[,1]=="Weight and Towing")-1
       df() %>% slice(a8:b8)
     })
     # weight and towing tab
-    output$weightTowing <- renderDataTable({
+    output$weightTowing <- renderDataTable(rownames = FALSE,colnames="",{
       a9<-which(df()[,1]=="Weight and Towing")+1
       b9<-which(df()[,1]=="Connectivity Features")-1
       df() %>% slice(a9:b9)
     })
     # connectivity features tab
-    output$connectivity <- renderDataTable({
+    output$connectivity <- renderDataTable(rownames = FALSE,colnames="",{
       df() %>% slice(which(df()[,1]=="Connectivity Features"))
     })
     # comfort features tab
-    output$comfort <- renderDataTable({
+    output$comfort <- renderDataTable(rownames = FALSE,colnames="",{
       df() %>% slice(which(df()[,1]=="Comfort Features"))
     })
     # safety features tab
-    output$safety <- renderDataTable({
+    output$safety <- renderDataTable(rownames = FALSE,colnames="",{
       df() %>% slice(which(df()[,1]=="Safety Features"))
     })
     # other features tab
-    output$other <- renderDataTable({
+    output$other <- renderDataTable(rownames = FALSE,colnames="",{
       df() %>% slice(which(df()[,1]=="Other Features"))
     })
 })
