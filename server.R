@@ -1002,5 +1002,140 @@ shinyServer(function(input, output) {
                           columnDefs = list(list(className = 'dt-center', targets = 0:2,
                                                  width = '200px', targets = c(2)))))
         })
+    ##  ............................................................................
+    ##  Car Model Recommendation browser                                                    ####
+    # generate pic for each model
+    output$img <- renderUI({
+      if(input$Model == "Kia Sorento"){            
+        img(src = "images/kiasorento.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Jaguar F-TYPE"){
+        img(src = "images/jaguar.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Chevrolet Corvette Stingray"){
+        img(src = "images/corvette.jpg",height=200,width=400)
+      }
+      else if(input$Model == "MINI Cooper Countryman"){
+        img(src = "images/countryman.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Subaru Outback"){
+        img(src = "images/outback.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Porsche 911"){
+        img(src = "images/porsche.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Mercedes-benz C-Class"){
+        img(src = "images/Cclass.jpg",height=200,width=400)
+      }
+      else if(input$Model == "MINI Cooper"){
+        img(src = "images/mini.jpg",height=200,width=400)
+      }
+      else if(input$Model == "Jeep Wrangler JK"){
+        img(src = "images/JK.jpg",height=200,width=400)
+      }
+    })
     
+    # display price for each model
+    output$Price <- renderText({
+      return(paste0("Reference Price: ",Preference$Price[Preference$Model==input$Model]))
+    })
+    
+    #generate data sets of each models for tabs 
+    df <- reactive({
+      input$Model
+      if(input$Model == "Kia Sorento"){            
+        kiasorento
+      }
+      else if(input$Model == "Chevrolet Corvette Stingray"){
+        corvette
+      }
+      else if(input$Model == "MINI Cooper Countryman"){
+        countryman
+      }
+      else if(input$Model == "Subaru Outback"){
+        outback
+      }
+      else if(input$Model == "Porsche 911"){
+        porsche
+      }
+      else if(input$Model == "Mercedes-benz C-Class"){
+        C.class
+      }
+      else if(input$Model == "MINI Cooper"){
+        mini
+      }
+      else if(input$Model == "Jeep Wrangler JK"){
+        JK
+      }
+    })
+    # basic info tab
+    output$basicInfo <- renderDataTable({
+      a1<-which(df()[,1]=="Basic Info")+1
+      b1<-which(df()[,1]=="Body and Dimension")-1
+      df() %>% slice(a1:b1)
+    })
+    # body and dimension tab
+    output$bodyDimension <- renderDataTable({
+      a2<-which(df()[,1]=="Body and Dimension")+1
+      b2<-which(df()[,1]=="Engine and Transmission")-1
+      df() %>% slice(a2:b2)
+    })
+    # engine and transmission tab
+    output$engineTrasmission <- renderDataTable({
+      a3<-which(df()[,1]=="Engine and Transmission")+1
+      b3<-which(df()[,1]=="Steering")-1
+      df()%>% slice(a3:b3)
+    })
+    # steering tab
+    output$steering <- renderDataTable({
+      a4<-which(df()[,1]=="Steering")+1
+      b4<-which(df()[,1]=="Tires")-1
+      df()%>% slice(a4:b4)
+    })
+    # tires tab
+    output$tires <- renderDataTable({
+      a5<-which(df()[,1]=="Tires")+1
+      b5<-which(df()[,1]=="Wheels")-1
+      df() %>% slice(a5:b5)
+    })
+    # wheels tab
+    output$wheels <- renderDataTable({
+      a6<-which(df()[,1]=="Wheels")+1
+      b6<-which(df()[,1]=="Brake Systems")-1
+      df() %>% slice(a6:b6)
+    })
+    # brake systems tab
+    output$brake <- renderDataTable({
+      a7<-which(df()[,1]=="Brake Systems")+1
+      b7<-which(df()[,1]=="Suspensions")-1
+      df() %>% slice(a7:b7)
+    })
+    # suspensions tab
+    output$suspensions <- renderDataTable({
+      a8<-which(df()[,1]=="Suspensions")+1
+      b8<-which(df()[,1]=="Weight and Towing")-1
+      df() %>% slice(a8:b8)
+    })
+    # weight and towing tab
+    output$weightTowing <- renderDataTable({
+      a9<-which(df()[,1]=="Weight and Towing")+1
+      b9<-which(df()[,1]=="Connectivity Features")-1
+      df() %>% slice(a9:b9)
+    })
+    # connectivity features tab
+    output$connectivity <- renderDataTable({
+      df() %>% slice(which(df()[,1]=="Connectivity Features"))
+    })
+    # comfort features tab
+    output$comfort <- renderDataTable({
+      df() %>% slice(which(df()[,1]=="Comfort Features"))
+    })
+    # safety features tab
+    output$safety <- renderDataTable({
+      df() %>% slice(which(df()[,1]=="Safety Features"))
+    })
+    # other features tab
+    output$other <- renderDataTable({
+      df() %>% slice(which(df()[,1]=="Other Features"))
+    })
 })

@@ -168,3 +168,38 @@ w <- read.csv2("data/wikipedia/wikiEditsByCT.csv",
 w %<>% filter(year > 2004 & year <= 2016)
 
 print("Wikipedia data complete")
+
+
+#   ____________________________________________________________________________
+#   Car Model Recommendation                                                ####
+Preference <- read.csv("data/ModelPreference_top10.csv")
+model <- Preference$Model
+
+#polaris slingshot is not found in israel
+
+#Kia Sorento (ILS 117,266)
+kiasorento <-read.csv("data/kiasorento.csv")
+
+#Jaguar F Type is not yet found in israel (coming soon)
+
+#Chevrolet Corvette Stingray (ILS 210,105)
+corvette <- read.csv("data/corvette.csv")
+
+#MINI Cooper Countryman (ILS 100,395)
+countryman <- read.csv("data/countryman.csv")
+
+#Subaru Outback (ILS 92,960)
+outback <- read.csv("data/outback.csv")
+
+#Porsche 911 (ILS 349,140)
+porsche <- read.csv("data/porsche.csv")
+
+#Mercedes C class
+C.class <- read.csv("data/C.class.csv")
+
+#Mini Cooper (ILS79,005)
+mini <- read.csv("data/mini.csv")
+
+#Jeep Wrangler JK (ILS 115,903)
+JK <- read.csv("data/JK.csv")
+

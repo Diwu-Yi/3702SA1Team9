@@ -43,10 +43,38 @@ shinyUI(navbarPage(title = "IntelliShare",
                    ),
                    
                    # ----------------------------------
-                   # tab panel 2 - Neighborhood Browser
-                   tabPanel("Available Carpark Browsers",
-                            neighborhoodDescription(),
-                            includeHTML("scrollToTop.html")
+                   # tab panel 2 - Car Model Recommendation Browser
+                   tabPanel(div(img(src='images/car.png',
+                                    style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Car Model Recommendation</span>')),
+                            sidebarLayout (
+                              sidebarPanel(
+                                selectInput("Model",
+                                            "Model details:",
+                                            choices = model,
+                                            selected = "Kia Sorento"),
+                                uiOutput("img"),
+                                textOutput("Price")
+                              ),
+                              
+                              mainPanel (
+                                navlistPanel(
+                                  tabPanel("Basic Info",withSpinner(dataTableOutput("basicInfo"))),
+                                  tabPanel("Body & Dimension",withSpinner(dataTableOutput("bodyDimension"))),
+                                  tabPanel("Engine & Transmission",withSpinner(dataTableOutput("engineTrasmission"))),
+                                  tabPanel("Steering",withSpinner(dataTableOutput("steering"))),
+                                  tabPanel("Tires",withSpinner(dataTableOutput("tires"))),
+                                  tabPanel("Wheels",withSpinner(dataTableOutput("wheels"))),
+                                  tabPanel("Brake Systems",withSpinner(dataTableOutput("brake"))),
+                                  tabPanel("Suspensions",withSpinner(dataTableOutput("suspensions"))),
+                                  tabPanel("Weight and Towing",withSpinner(dataTableOutput("weightTowing"))),
+                                  tabPanel("Connectivity Features",withSpinner(dataTableOutput("connectivity"))),
+                                  tabPanel("Comfort Features",withSpinner(dataTableOutput("comfort"))),
+                                  tabPanel("Safety Features",withSpinner(dataTableOutput("safety"))),
+                                  tabPanel("Other Features",withSpinner(dataTableOutput("other")))
+                                )
+                              )
+                            )
                    ),
                    
                    # ----------------------------------
