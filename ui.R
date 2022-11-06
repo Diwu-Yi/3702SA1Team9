@@ -57,6 +57,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                                             choices = model,
                                             selected = "Kia Sorento"),
                                 uiOutput("img"),
+                                hr(),
                                 textOutput("Price")
                               ),
                               
