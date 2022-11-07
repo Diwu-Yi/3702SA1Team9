@@ -23,7 +23,7 @@ source("readData.R")
 
 shinyUI(navbarPage(title = "IntelliShare",
                    theme = "style/style.css",
-                   footer = includeHTML("footer.html"),
+                   footer = includeHTML("footer-new.html"),
                    fluid = TRUE, 
                    collapsible = TRUE,
                    
