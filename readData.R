@@ -58,6 +58,10 @@ pred %<>%
         funs(./100)
     ) %>% bind_cols(pred[names(pred) != cols])
 
+#   ____________________________________________________________________________
+#   Carpark Availability for maps                                           ####
+db_clean <- read.csv("data/carpark/db_clean_full.csv")
+db_available <- db_clean[db_clean$available == T, ]
 
 # join prediction data with shapefile
 GeoDF <- sp::merge(CTshapes, pred, by.x = "GEOID", by.y = "ct", all.x = FALSE)

@@ -4,13 +4,19 @@
 neighborhoodDescription <- function() {
     tagList(
         div(class = "container",
-            h1("Carpark Browser", class = "title fit-h1"),
-            p("Interested to find out nearest available carparks? Use this map-based browser to checkout the availability of carparks"),
-            p("Use the slider to show only the nearset k carparks YOYOYOYYOOOYYOYOYO."),
+            h1("Carpark Browser: Provided for Your Customers", class = "title fit-h1"),
+            p("Interested to find out nearest available carparks? Use this map-based browser to checkout the availability of carparks near your place."),
+            p("Use the Longitude and Latitude Inputs to center the map at your place. Don't your coordinates ? Simply google 'my map coordinates' !"),
+            p("Use the slider to show only k available carparks around to avoid conflicts with others."),
             fluidRow(
-                column(7,
-                       sliderInput("topK","Show nearest k carparks",
-                                   10, max(pred$rank), 50, 10, width = "100%"),
+                column(12,
+                       numericInput("lon", label = h3("Enter longitude of your location"), value = 34.79399507628829),
+                       numericInput("lat", label = h3("Enter latitude of your location"), value = 32.08886188641638),
+                       sliderInput("topK",label = h3("Show nearest k carparks"),
+                                   min = 50, 
+                                   max = 500, value = 200),
+                       radioButtons(inputId = "mapFormat",label="View Format",
+                                    choices = c("Point","Heatmap")),
                        leafletOutput("map", height = 600)
                        ),
                 hidden(column(5, class = "hood-info", id = "reactiveOutput1",
@@ -146,104 +152,3 @@ legend <- "<div class='legend-custom'>
                    <div class='legend-element-name'>Schools</div>
                </div>
            </div>"
-
-propertyComparison <- function() {
-    
-    sampleLocations <- c("20 Gerry St, New York",
-                         "38 Harrison Ave, New York",
-                         "1862 Cornelia St, New York",
-                         "243-245 E 118th St, New York",
-                         "517 W 147th St, New York")
-    
-    sampleLocations <- sample(sampleLocations,2)
-    
-    tagList(
-        div(class = "container",
-            h1("Location Comparison", class = "title fit-h1"),
-            #tags$script(src = "plugins/fittext.js"),
-            p("You have already identified two locations of interest, but cannt decide which one to invest in? Let us help make your final decision."),
-            p("Enter the addresses of two properties below and click the button to compare the locations in terms of gentrification potential."),
-            p("Click the button to compare two sample locations or enter search addresses of your own!"),
-            p("Using the buttons above the map, you can also show the location of nearby schools, subway stations and places on Yelp."),
-            fluidRow(
-                column(4,
-                       div(class = "addrSearch",
-                           textInput("searchAddr1", 
-                                     value = sampleLocations[1],
-                                     placeholder = "Enter address...",
-                                     label = NA),
-                           class = "search")
-                       ),
-                column(4, class="text-center", 
-                       disabled(actionButton("compare", width = "75%",
-                                    class = "btn-primary", style = "margin: 20px 0 20px 0;",
-                                    HTML("&laquo; Compare locations &raquo;")))
-                       ),
-                column(4,
-                       div(class = "addrSearch",
-                           textInput("searchAddr2", 
-                                     value = sampleLocations[2],
-                                     placeholder = "Enter address...",
-                                     label = NA),
-                           class = "search"
-                       )
-                )
-            ),
-            hidden(
-                div(id = "mapControls",
-                    fluidRow(style = "margin-bottom: 15px; text-align: center;",
-                        column(12,
-                               bsButton("showLayerSchools", "Schools", style = "info", size = "small", type = "toggle"),
-                               bsButton("showLayerSubway", "Subway", style = "info", size = "small", type = "toggle"),
-                               bsButton("showLayerYelp", "Yelp", style = "info", size = "small", type = "toggle")
-                               )
-                        )
-                )
-            ),
-            fluidRow(
-                column(6,
-                       hidden(div(id = "reactiveOutput7a",
-                           leafletOutput("mapLocation1"),
-                           HTML(legend),
-                           h2(textOutput("hoodName1")),
-                           p(textOutput("iScore1", inline = TRUE), style = "height: 60px;"),
-                           div(id = "hood-details1",
-                               h4("Monthly development of real estate prices"),
-                               plotlyOutput("zillowLocation1", height = "150px", width = "100%")
-                               )
-                           ))
-                       ),
-                column(6,
-                       hidden(div(id = "reactiveOutput7b",
-                           leafletOutput("mapLocation2"),
-                           HTML(legend),
-                           h2(textOutput("hoodName2")),
-                           p(textOutput("iScore2", inline = TRUE), style = "height: 60px;"),
-                           div(id = "hood-details2",
-                               h4("Monthly development of real estate prices"),
-                               plotlyOutput("zillowLocation2", height = "150px", width = "100%")
-                               )
-                           ))
-                       )
-            ),
-            fluidRow(
-                column(12,
-                       
-                       hidden(div(id = "reactiveOutput8",
-                                  hr(),
-                                  h3("Comparison of key demographics"),
-                                  plotlyOutput("CTcomparisonChart", height = "750px"))
-                       ))
-            ),
-            fluidRow(
-                column(12,
-                       hidden(div(id = "reactiveOutput9", 
-                                  style = "margin-top: 30px; font-size: 1.5em;",
-                                  hr(),
-                                  h3("Values for key demographics and real estate metrics"),
-                                  DT::dataTableOutput("CTcomparisonTable"))
-                       ))
-            )
-        )
-    )
-}

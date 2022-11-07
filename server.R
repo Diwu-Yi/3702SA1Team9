@@ -26,6 +26,7 @@ library(purrr)
 library(RColorBrewer)
 library(DT)
 library(shinyBS)
+library(fontawesome)
 
 source("keyring.R")
 
@@ -88,36 +89,52 @@ shinyServer(function(input, output) {
             GeoDF$GEOID, round(GeoDF$bin_20*100),1) %>% lapply(htmltools::HTML)  
     })
     
+    get_db_scaled <- reactive({
+      db_available[sample(nrow(db_available), input$topK),]
+      })
+    get_lon <- reactive({input$lon})
+    get_lng <- reactive({input$lat})
+    
     # ---------------------------
     # create color scheme for map
     bins <- c(seq(0,1,.2))
     pal <- colorBin("YlOrRd", domain = rev(GeoDF$bin_20), bins = rev(bins))
+    
+    getColor <- function(db_scaled) {
+      sapply(db_scaled$lots, function(lots) {
+        if(lots >= 4) {
+          "green"
+        } else if(lots >= 2) {
+          "orange"
+        } else {
+          "red"
+        } })
+    }
+    
+    icons <- awesomeIcons(
+      markerColor = getColor(db_scaled = db_scaled)
+    )
 
     output$map <- renderLeaflet({
-        
-        leaflet(GeoDFr()) %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            setView(-73.885343, 40.720403, 11) %>%
-            addPolygons(layerId = geoIDs(),
-                        weight = 1, smoothFactor = 0.5,
-                        opacity = 1.0, fillOpacity = 0.8,
-                        color = NA,
-                        fillColor = ~pal(bin_20),
-                        highlightOptions = highlightOptions(
-                            color = "white", weight = 2,
-                            bringToFront = TRUE),
-                        label = CTlabels(),
-                        labelOptions = labelOptions(
-                            style = list("font-weight" = "normal",
-                                         padding = "3px 8px"),
-                            textsize = "15px",
-                            direction = "auto")) %>% 
-            leaflet::addLegend(pal = pal, 
-                      values = ~bin_20, 
-                      opacity = 0.7, 
-                      title = NULL,
-                      position = "bottomright")
-    })
+      if(input$mapFormat=='Point') {
+        db_scaled <- get_db_scaled()
+        db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+        latitude <- get_lng()
+        longitude <- get_lon()
+        leaflet(data = db_scaled) %>% addTiles() %>%
+          setView(lat = latitude, lng = longitude, zoom = 13) %>%
+          addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
+      }
+      else if (input$mapFormat == 'Heatmap'){
+        db_scaled <- get_db_scaled()
+        db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+        leaflet(data = db_scaled) %>% addTiles() %>%
+          setView(lat = 32.08886188641638, lng = 34.79399507628829, zoom = 13) %>%
+          addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
+      }
+      else {print("Wrong format name")}
+    }
+    )
     
     # --------------------------------------------------------
     # observe click events in map and get neighborhood details
@@ -592,36 +609,7 @@ shinyServer(function(input, output) {
             shinyjs::enable("compare")
         }
     })
-    
-    observe({
-        if(input$showLayerSchools) {
-            leafletProxy("mapLocation1") %>% showGroup("Schools")
-            leafletProxy("mapLocation2") %>% showGroup("Schools")
-        } else {
-            leafletProxy("mapLocation1") %>% hideGroup("Schools")
-            leafletProxy("mapLocation2") %>% hideGroup("Schools")
-        }
-    })
-    
-    observe({
-        if(input$showLayerSubway) {
-            leafletProxy("mapLocation1") %>% showGroup("Subway")
-            leafletProxy("mapLocation2") %>% showGroup("Subway")
-        } else {
-            leafletProxy("mapLocation1") %>% hideGroup("Subway")
-            leafletProxy("mapLocation2") %>% hideGroup("Subway")
-        }
-    })
-    
-    observe({
-        if(input$showLayerYelp) {
-            leafletProxy("mapLocation1") %>% showGroup("Yelp")
-            leafletProxy("mapLocation2") %>% showGroup("Yelp")
-        } else {
-            leafletProxy("mapLocation1") %>% hideGroup("Yelp")
-            leafletProxy("mapLocation2") %>% hideGroup("Yelp")
-        }
-    })
+
     
     # ------------
     # zillow chart

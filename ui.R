@@ -70,19 +70,19 @@ shinyUI(navbarPage(title = "IntelliShare",
                               
                               mainPanel (
                                 navlistPanel(
-                                  tabPanel("Basic Info",withSpinner(dataTableOutput("basicInfo"))),
-                                  tabPanel("Body & Dimension",withSpinner(dataTableOutput("bodyDimension"))),
-                                  tabPanel("Engine & Transmission",withSpinner(dataTableOutput("engineTrasmission"))),
-                                  tabPanel("Steering",withSpinner(dataTableOutput("steering"))),
-                                  tabPanel("Tires",withSpinner(dataTableOutput("tires"))),
-                                  tabPanel("Wheels",withSpinner(dataTableOutput("wheels"))),
-                                  tabPanel("Brake Systems",withSpinner(dataTableOutput("brake"))),
-                                  tabPanel("Suspensions",withSpinner(dataTableOutput("suspensions"))),
-                                  tabPanel("Weight and Towing",withSpinner(dataTableOutput("weightTowing"))),
-                                  tabPanel("Connectivity Features",withSpinner(dataTableOutput("connectivity"))),
-                                  tabPanel("Comfort Features",withSpinner(dataTableOutput("comfort"))),
-                                  tabPanel("Safety Features",withSpinner(dataTableOutput("safety"))),
-                                  tabPanel("Other Features",withSpinner(dataTableOutput("other")))
+                                  tabPanel("Basic Info",shinycssloaders::withSpinner(dataTableOutput("basicInfo"))),
+                                  tabPanel("Body & Dimension",shinycssloaders::withSpinner(dataTableOutput("bodyDimension"))),
+                                  tabPanel("Engine & Transmission",shinycssloaders::withSpinner(dataTableOutput("engineTrasmission"))),
+                                  tabPanel("Steering",shinycssloaders::withSpinner(dataTableOutput("steering"))),
+                                  tabPanel("Tires",shinycssloaders::withSpinner(dataTableOutput("tires"))),
+                                  tabPanel("Wheels",shinycssloaders::withSpinner(dataTableOutput("wheels"))),
+                                  tabPanel("Brake Systems",shinycssloaders::withSpinner(dataTableOutput("brake"))),
+                                  tabPanel("Suspensions",shinycssloaders::withSpinner(dataTableOutput("suspensions"))),
+                                  tabPanel("Weight and Towing",shinycssloaders::withSpinner(dataTableOutput("weightTowing"))),
+                                  tabPanel("Connectivity Features",shinycssloaders::withSpinner(dataTableOutput("connectivity"))),
+                                  tabPanel("Comfort Features",shinycssloaders::withSpinner(dataTableOutput("comfort"))),
+                                  tabPanel("Safety Features",shinycssloaders::withSpinner(dataTableOutput("safety"))),
+                                  tabPanel("Other Features",shinycssloaders::withSpinner(dataTableOutput("other")))
                                 )
                               )
                             )
@@ -90,10 +90,16 @@ shinyUI(navbarPage(title = "IntelliShare",
                    
                    # ----------------------------------
                    # tab panel 4 - Car Park
+                   #tabPanel(div(img(src='images/location.png',
+                    #                style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                    #            HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Available Carpark Identification</span>')),
+                    #        neighborhoodDescription()
+                   #),
                    tabPanel(div(img(src='images/location.png',
                                     style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
-                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Location Comparison</span>')),
-                            propertyComparison()
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Available Carpark Identification</span>')),
+                            neighborhoodDescription(),
+                            includeHTML("scrollToTop.html")
                    ),
                    
                    # ----------------------------------
