@@ -30,7 +30,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                    # ----------------------------------
                    # tab panel 1 - Home
                    tabPanel("Home",
-                            includeHTML("home.html"),
+                            includeHTML("home-new.html"),
                             tags$script(src = "plugins/scripts.js"),
                             tags$head(
                               tags$link(rel = "stylesheet", 
