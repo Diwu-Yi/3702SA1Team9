@@ -1003,7 +1003,7 @@ shinyServer(function(input, output) {
                                                  width = '200px', targets = c(2)))))
         })
     ##  ............................................................................
-    ##  Car Model Recommendation browser                                                    ####
+    ##  Car Model Recommendation browser                                        ####
     # generate pic for each model
     output$img <- renderUI({
       if(input$Model == "Kia Sorento"){            

@@ -29,7 +29,9 @@ shinyUI(navbarPage(title = "IntelliShare",
                    
                    # ----------------------------------
                    # tab panel 1 - Home
-                   tabPanel("Home",
+                   tabPanel(div(img(src='images/home.png',
+                                    style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Home</span>')),
                             includeHTML("home-new.html"),
                             tags$script(src = "plugins/scripts.js"),
                             tags$head(
@@ -38,12 +40,17 @@ shinyUI(navbarPage(title = "IntelliShare",
                                         href = "plugins/font-awesome-4.7.0/css/font-awesome.min.css"),
                               tags$link(rel = "icon", 
                                         type = "image/png", 
-                                        href = "images/logo_icon.png")
+                                        href = "images/logo1.png")
                             )
                    ),
-                   
                    # ----------------------------------
-                   # tab panel 2 - Car Model Recommendation Browser
+                   # tab panel 2 - Customer Demand
+                   tabPanel(div(img(src='images/customer.png',
+                                    style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Customer Demand Investigation</span>'))
+                   ),
+                   # ----------------------------------
+                   # tab panel 3 - Car Model Recommendation Browser
                    tabPanel(div(img(src='images/car.png',
                                     style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
                                 HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Car Model Recommendation</span>')),
@@ -82,14 +89,18 @@ shinyUI(navbarPage(title = "IntelliShare",
                    ),
                    
                    # ----------------------------------
-                   # tab panel 3 - Location Comparison
-                   tabPanel("Location Comparison",
+                   # tab panel 4 - Car Park
+                   tabPanel(div(img(src='images/location.png',
+                                    style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Location Comparison</span>')),
                             propertyComparison()
                    ),
                    
                    # ----------------------------------
-                   # tab panel 4 - About
-                   tabPanel("Hi",
+                   # tab panel 5 - About
+                   tabPanel(div(img(src='images/about.png',
+                                    style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">About</span>')),
                             includeHTML("about.html"),
                             shinyjs::useShinyjs(),
                             tags$head(
