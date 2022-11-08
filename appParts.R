@@ -16,7 +16,7 @@ neighborhoodDescription <- function() {
                                    min = 50, 
                                    max = 500, value = 200),
                        radioButtons(inputId = "mapFormat",label="View Format",
-                                    choices = c("Point","Heatmap")),
+                                    choices = c("Point","Heatmap","Cluster")),
                        leafletOutput("map", height = 600)
                        ),
                 hidden(column(5, class = "hood-info", id = "reactiveOutput1",
