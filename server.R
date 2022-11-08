@@ -90,7 +90,7 @@ shinyServer(function(input, output) {
     })
     
     get_db_scaled <- reactive({
-      db_available[sample(nrow(db_available), input$topK),]
+      db_scaled <- db_available[sample(nrow(db_available), input$topK),]
       })
     get_lon <- reactive({input$lon})
     get_lng <- reactive({input$lat})
@@ -100,8 +100,8 @@ shinyServer(function(input, output) {
     bins <- c(seq(0,1,.2))
     pal <- colorBin("YlOrRd", domain = rev(GeoDF$bin_20), bins = rev(bins))
     
-    getColor <- function(db_scaled) {
-      sapply(db_scaled$lots, function(lots) {
+    getColor <- function(db) {
+      sapply(db$lots, function(lots) {
         if(lots >= 4) {
           "green"
         } else if(lots >= 2) {
@@ -118,7 +118,7 @@ shinyServer(function(input, output) {
         db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
         
         icons <- awesomeIcons(
-          markerColor = getColor(db_scaled = db_scaled)
+          markerColor = getColor(db_scaled)
         )
         latitude <- get_lng()
         longitude <- get_lon()
