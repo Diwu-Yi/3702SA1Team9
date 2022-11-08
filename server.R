@@ -110,15 +110,16 @@ shinyServer(function(input, output) {
           "red"
         } })
     }
-    
-    icons <- awesomeIcons(
-      markerColor = getColor(db_scaled = db_scaled)
-    )
 
     output$map <- renderLeaflet({
       if(input$mapFormat=='Point') {
         db_scaled <- get_db_scaled()
+        
         db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+        
+        icons <- awesomeIcons(
+          markerColor = getColor(db_scaled = db_scaled)
+        )
         latitude <- get_lng()
         longitude <- get_lon()
         leaflet(data = db_scaled) %>% addTiles() %>%
@@ -128,6 +129,11 @@ shinyServer(function(input, output) {
       else if (input$mapFormat == 'Heatmap'){
         db_scaled <- get_db_scaled()
         db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+        
+        icons <- awesomeIcons(
+          markerColor = getColor(db_scaled = db_scaled)
+        )
+        
         leaflet(data = db_scaled) %>% addTiles() %>%
           setView(lat = 32.08886188641638, lng = 34.79399507628829, zoom = 13) %>%
           addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
