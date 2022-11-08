@@ -4,6 +4,8 @@
 library(shiny)
 library(rgdal)
 library(leaflet)
+library(leaflet.extras)
+library(shinyTime)
 library(sp)
 library(plotly)
 library(dplyr)
@@ -122,23 +124,37 @@ shinyServer(function(input, output) {
         )
         latitude <- get_lng()
         longitude <- get_lon()
-        leaflet(data = db_scaled) %>% addTiles() %>%
+        m= leaflet(data = db_scaled) %>% addTiles() %>%
           setView(lat = latitude, lng = longitude, zoom = 13) %>%
           addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
       }
       else if (input$mapFormat == 'Heatmap'){
-        db_scaled <- get_db_scaled()
-        db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+      db_scaled <- get_db_scaled()
+      
+       m<-leaflet(data = db_scaled) %>% addTiles() %>%
+         addHeatmap(lng= ~longitude, lat= ~latitude,radius=11,intensity=~total_cars)
+
+         
         
-        icons <- awesomeIcons(
-          markerColor = getColor(db_scaled = db_scaled)
-        )
+      }
+      else if (input$mapFormat == 'Cluster'){
+      db_scaled <- get_db_scaled()
+      
+      m<-leaflet(data = db_scaled) %>% addTiles() %>%
+        addCircleMarkers(~longitude, ~latitude, stroke=FALSE,fillOpacity = 0.2,clusterOptions = markerClusterOptions())
         
-        leaflet(data = db_scaled) %>% addTiles() %>%
-          setView(lat = 32.08886188641638, lng = 34.79399507628829, zoom = 13) %>%
-          addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
+        
+        
       }
       else {print("Wrong format name")}
+      
+      
+      m <- addProviderTiles(m,"Esri.WorldImagery", group = "Esri")
+      m <- addProviderTiles(m,"Stamen.Toner", group = "Toner")
+      m <- addProviderTiles(m, "Stamen.TonerLite", group = "Toner Lite")
+      m <- addLayersControl(m, baseGroups = c("Default","Esri",
+                                              "Toner Lite","Toner"))
+      m
     }
     )
     
