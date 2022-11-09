@@ -1,0 +1,159 @@
+---
+title: "project_assignment"
+author: "zhangyi"
+date: "2022-10-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Qn: Israel map with marked available carparks
+
+```{r}
+library(lubridate)
+library(geosphere)
+library(leaflet)
+library(dplyr)
+library(lubridate)
+library(jsonlite)
+library(rjson)
+library(ggmap)
+library(ggplot2)
+library(mapview)
+```
+
+```{r}
+db <- read.csv("2020_02_25.csv")
+neighbourhoods <- read.csv("autoTel_30m_Neighborhoods.csv")
+```
+
+```{r}
+#db2 <- db %>% mutate(Delta = abs(latitude - lag(latitude, default = 0)) + 
+#                    abs(longitude - lag(longitude, default = 0)) > 0.002)
+neighbourhoods <- neighbourhoods %>% group_by(neighborhood) %>% summarise(lat = mean(latitude), lon = mean(longitude))
+```
+
+```{r}
+euclidean_dis <- function(x1,y1,x2,y2)
+{
+  return(sqrt((x1-x2)^2 + (y1-y2)^2))
+}
+```
+
+```{r}
+db$neighbourhood <- rep("", nrow(db))
+```
+
+```{r}
+db_sample <- db[sample(nrow(db), 200000), ] #make it to 200000 when for final run 
+for (i in 1:nrow(db_sample)) {
+  if(i %% 1000 == 0) {
+    print(i)
+  }
+  min_dis = 999
+  curr_neibourhood <- ""
+  curr_row <- db[i,]
+  for (j in 1:nrow(neighbourhoods)) {
+    nei_row <- neighbourhoods[j,]
+    curr_dis = euclidean_dis(curr_row[1], curr_row[2], nei_row[2], nei_row[3])
+    if (curr_dis < min_dis) {
+      min_dis = curr_dis
+      curr_neibourhood <- nei_row[1]
+      db_sample[i,6] <- curr_neibourhood
+    }
+  }
+}
+```
+```{r}
+library(tidyr)
+db_prepare <- db_sample %>% separate(col=timestamp, into = c("date","time"), sep = " ", extra = "drop")
+```
+```{r}
+db_prepare$date <- as.Date(db_prepare$date)
+db_prepare$weekday <- weekdays(db_prepare$date)
+db_prepare <- db_prepare %>% separate(col = time, into = c("hour", "minute"), sep = ":", extra = "drop")
+```
+```{r}
+weekends <- c("Saturday", "Sunday")
+db_prepare$is.weekend <- ifelse(db_prepare$weekday %in% weekends, "Weekends", "Weekdays")
+peak <- c("08", "09", "18", "19")
+db_prepare$is.peak <- ifelse(db_prepare$hour %in% peak, "peak", "off-peak")
+```
+```{r}
+db_clean <- as.data.frame(db_prepare)
+#bench mark available rate for weekend
+availability.benchmark <- read.csv("response_carpark_availability_weekend.csv")
+available.weekend <- availability.benchmark[availability.benchmark$carpark_data__carpark_info__lots_available > 0, ]
+ratio.weekend <- nrow(available) / nrow(availability.benchmark)
+availability.weekday.peak <- read.csv("response_weekday_peak.csv")
+available.weekday.peak <- availability.weekday.peak[availability.weekday.peak$carpark_data__carpark_info__lots_available > 0,]
+ratio.weekday.peak <- nrow(available.weekday.peak) / nrow(availability.weekday.peak)
+availability.weekday.offpeak <- read.csv("response_weekday_offpeak.csv")
+available.weekday.offpeak <- availability.weekday.offpeak[availability.weekday.offpeak$carpark_data__carpark_info__lots_available > 0,]
+ratio.weekday.offpeak <- nrow(available.weekday.offpeak) / nrow(availability.weekday.offpeak)
+```
+```{r}
+db_clean$available <- rep(TRUE, nrow(db_clean))
+for (i in 1: nrow(db_clean)) {
+  if(i %% 1000 == 0) {
+    print(i)
+  }
+  toss <- runif(1, min = 0, max = 1)
+  curr_row <- db_clean[i,]
+  if (curr_row[10] == "Weekends") {
+    if (toss > ratio.weekend) {
+      db_clean[i, 12] <- FALSE
+    }
+  }
+  else {
+    if (curr_row[11] == "off-peak") {
+      if (toss > ratio.weekday.offpeak) {
+        db_clean[i, 12] <- FALSE
+      }
+    } else {
+      if (toss > ratio.weekday.peak) {
+        db_clean[i, 12] <- FALSE
+      }
+    }
+  }
+}
+```
+```{r}
+write.csv(db_clean, file = "db_clean_full.csv")
+```
+
+```{r}
+db_available <- db_clean[db_clean$available == T, ]
+db_scaled <- db_available[sample(nrow(db_available), 200),]
+db_scaled$lots <- (max(db_scaled$total_cars) +1 ) - db_scaled$total_cars
+map <- get_map(location = c(lon = 34.79399507628829, lat =32.08886188641638),
+  scale = 2 ,
+  zoom = 13)
+
+#ggmap(map) + geom_point(data = db_scaled, aes(x=longitude, y=latitude, color = lots)) + scale_colour_continuous(low = "yellow", high = "red", space = "Lab", guide = "colorbar")
+```
+
+```{r}
+# next steps: interactively generate a nearest point given a pair of coordinates
+# Evalueated by how much insights to the clients
+library(fontawesome)
+getColor <- function(db_scaled) {
+  sapply(db_scaled$lots, function(lots) {
+  if(lots >= 4) {
+    "green"
+  } else if(lots >= 2) {
+    "orange"
+  } else {
+    "red"
+  } })
+}
+
+icons <- awesomeIcons(
+  markerColor = getColor(db_scaled = db_scaled)
+)
+
+leaflet(data = db_scaled) %>% addTiles() %>%
+  addAwesomeMarkers(~longitude, ~latitude, icon = icons, popup = ~as.character(lots), label = ~as.character(lots))
+```
