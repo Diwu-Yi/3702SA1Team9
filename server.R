@@ -251,7 +251,7 @@ shinyServer(function(input, output) {
         
         {
           if(input$format == 'Weekday') {
-            dbByCar %>% 
+            m2 <- dbByCar %>% 
               filter(Is.Weekend == F ) %>% 
               group_by(latitude, longitude) %>% 
               summarise(weekday.demand = sum(total_cars)) %>% 
@@ -262,7 +262,7 @@ shinyServer(function(input, output) {
                                clusterOptions = markerClusterOptions())
           }
           else if (input$format == 'Weekend'){
-            dbByCar %>% 
+            m2 <- dbByCar %>% 
               filter(Is.Weekend == T ) %>% 
               group_by(latitude, longitude) %>% 
               summarise(weekend.demand = sum(total_cars)) %>% 
@@ -273,6 +273,12 @@ shinyServer(function(input, output) {
                                clusterOptions = markerClusterOptions())
           }
           else {print("Wrong format name")}
+          m2 <- addProviderTiles(m2,"Esri.WorldImagery", group = "Esri")
+          m2 <- addProviderTiles(m2,"Stamen.Toner", group = "Toner")
+          m2 <- addProviderTiles(m2, "Stamen.TonerLite", group = "Toner Lite")
+          m2 <- addLayersControl(m2, baseGroups = c("Default","Esri",
+                                                  "Toner Lite","Toner"))
+          m2
         }
       )
     
