@@ -130,8 +130,9 @@ shinyServer(function(input, output) {
       }
       else if (input$mapFormat == 'Heatmap'){
       db_scaled <- get_db_scaled()
-      
-       m<-leaflet(data = db_scaled) %>% addTiles() %>%
+      latitude <- get_lng()
+      longitude <- get_lon()
+       m<-leaflet(data = db_scaled) %>% addTiles() %>% setView(lat = latitude, lng = longitude, zoom = 12) %>%
          addHeatmap(lng= ~longitude, lat= ~latitude,radius=11,intensity=~total_cars)
 
          
@@ -139,8 +140,9 @@ shinyServer(function(input, output) {
       }
       else if (input$mapFormat == 'Cluster'){
       db_scaled <- get_db_scaled()
-      
-      m<-leaflet(data = db_scaled) %>% addTiles() %>%
+      latitude <- get_lng()
+      longitude <- get_lon()
+      m<-leaflet(data = db_scaled) %>% addTiles() %>% setView(lat = latitude, lng = longitude, zoom = 13) %>%
         addCircleMarkers(~longitude, ~latitude, stroke=FALSE,fillOpacity = 0.2,clusterOptions = markerClusterOptions())
         
         
