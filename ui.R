@@ -49,6 +49,8 @@ shinyUI(navbarPage(title = "IntelliShare",
                    tabPanel(div(img(src='images/customer.png',
                                     style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
                                 HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Market Demand Analysis</span>')),
+                            class = "container",
+                            h1("Customer Demand", class = "title fit-h1"),
                             pageWithSidebar(
                               headerPanel("View Car Demand"),
                               sidebarPanel(  
