@@ -53,7 +53,6 @@ shinyUI(navbarPage(title = "IntelliShare",
                             h1("Customer Demand", class = "title fit-h1"),
                             p("Let us take a glance at Israel car user demand!"),
                             pageWithSidebar(
-                              headerPanel("View Car Demand"),
                               sidebarPanel(  
                                 radioButtons(inputId = "format",label="View Days",
                                              choices = c("Weekday","Weekend"))
