@@ -187,7 +187,7 @@ model <- Preference$Model
 #polaris slingshot is not found in israel
 
 #Kia Sorento (ILS 117,266)
-kiasorento <-read.csv("data/kiasorento.csv")
+kiasorento <- as.data.frame(read.csv("data/kiasorento.csv"))
 
 #Jaguar F Type is not yet found in israel (coming soon)
 
