@@ -66,6 +66,11 @@ db_available <- db_clean[db_clean$available == T, ]
 # join prediction data with shapefile
 GeoDF <- sp::merge(CTshapes, pred, by.x = "GEOID", by.y = "ct", all.x = FALSE)
 
+#   ____________________________________________________________________________
+#   Carpark Demand                                           ####
+dbByCar <- read.csv("data/dbByCar.csv")
+dbByCar$Is.Weekend <- ifelse((dbByCar$Weekday) %in% c("Sat", "Sun"),T, F)
+dbByCar$Timeslot <- strftime(dbByCar$timestamp, format="%H:%00:%00")
 
 #   ____________________________________________________________________________
 #   Labels and IDs for maps                                                 ####

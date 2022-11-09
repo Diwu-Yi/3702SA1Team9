@@ -246,10 +246,8 @@ shinyServer(function(input, output) {
     
     # -----------------
     # customer demand
-    
-  customer_demand <- function(input, output) {
       
-      demand <-renderLeaflet(
+      output$demand <-renderLeaflet(
         
         {
           if(input$format == 'Weekday') {
@@ -277,11 +275,6 @@ shinyServer(function(input, output) {
           else {print("Wrong format name")}
         }
       )
-      output$demand <- renderUI({
-        demand <- demand()
-        HTML(paste(demand, sep = "", collapse = ""))
-    })
-  }
     
     # ------
     # zillow
