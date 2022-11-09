@@ -47,7 +47,19 @@ shinyUI(navbarPage(title = "IntelliShare",
                    # tab panel 2 - Customer Demand
                    tabPanel(div(img(src='images/customer.png',
                                     style="margin-top: -5px; padding-left:0px; padding-right:5px;padding-bottom:0px; height: 30px", height = 60),
-                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Customer Demand Investigation</span>'))
+                                HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Customer Demand Investigation</span>')),
+                              pageWithSidebar(
+                              headerPanel("View Car Demand"),
+                              sidebarPanel(  
+                                radioButtons(inputId = "format",label="View Days",
+                                             choices = c("Weekday","Weekend"))
+                              ),
+                              
+                              mainPanel (
+                                leafletOutput(outputId = "demand")
+                              )
+                              
+                            )
                    ),
                    # ----------------------------------
                    # tab panel 3 - Car Model Recommendation Browser

@@ -244,6 +244,45 @@ shinyServer(function(input, output) {
             lapply(htmltools::HTML)
     })
     
+    # -----------------
+    # customer demand
+    
+  customer_demand <- function(input, output) {
+      
+      demand <-renderLeaflet(
+        
+        {
+          if(input$format == 'Weekday') {
+            dbByCar %>% 
+              filter(Is.Weekend == F ) %>% 
+              group_by(latitude, longitude) %>% 
+              summarise(weekday.demand = sum(total_cars)) %>% 
+              leaflet() %>% 
+              addTiles() %>%
+              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                               radius = 5, 
+                               clusterOptions = markerClusterOptions())
+          }
+          else if (input$format == 'Weekend'){
+            dbByCar %>% 
+              filter(Is.Weekend == T ) %>% 
+              group_by(latitude, longitude) %>% 
+              summarise(weekend.demand = sum(total_cars)) %>% 
+              leaflet() %>% 
+              addTiles() %>%
+              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                               radius = 5, 
+                               clusterOptions = markerClusterOptions())
+          }
+          else {print("Wrong format name")}
+        }
+      )
+      output$demand <- renderUI({
+        demand <- demand()
+        HTML(paste(demand, sep = "", collapse = ""))
+    })
+  }
+    
     # ------
     # zillow
     
