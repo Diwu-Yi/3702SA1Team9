@@ -51,6 +51,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                                 HTML('<span style="font-size: 14px; text-align:right; font-weight:bold">Market Demand Analysis</span>')),
                             class = "container",
                             h1("Customer Demand", class = "title fit-h1"),
+                            p("Let us take a glance at Israel car user demand!"),
                             pageWithSidebar(
                               headerPanel("View Car Demand"),
                               sidebarPanel(  
