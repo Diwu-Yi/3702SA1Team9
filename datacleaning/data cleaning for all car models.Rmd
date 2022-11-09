@@ -1,0 +1,111 @@
+---
+title: "data cleaning"
+author: "Shuchen"
+date: "2022-11-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(rvest)
+library(fuzzyjoin)
+library(formattable)
+```
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(rvest)
+library(fuzzyjoin)
+library(formattable)
+```
+
+
+
+```{r}
+car <-read.csv('CarRentalData.csv')
+car <- na.omit(car)
+car <- car[-c(5,6,7,8,9,10,11)]
+car$fuelType <- as.factor(car$fuelType)
+car$vehicle.model <- paste(car$vehicle.make,car$vehicle.model)
+car <- car[-c(5)]
+car$vehicle.model <- as.factor(car$vehicle.model)
+car <- car[car$fuelType %in% c("GASOLINE", "HYBRID","DIESEL"), ]
+car <- car[car$vehicle.type %in% c("suv", "car"),]
+car <- car %>% filter(reviewCount >= 20) #mean review count 31.11944
+car <- car %>% group_by(vehicle.model) %>% filter(n()>5) #more than 5 reviews
+View(car)
+```
+
+```{r}
+#Model Preference with its weighted rating 
+ModelPreference <- car%>%group_by(vehicle.model)%>%summarise(weighted.mean(rating,renterTripsTaken))
+colnames(ModelPreference)<-c("Model","WeightedAverageRating")
+ModelPreference$WeightedAverageRating<-as.numeric(formatC(ModelPreference$WeightedAverageRating, digits = 4, format = "f"))
+
+```
+
+```{r} 
+#getting top X models
+ModelPreference <- ModelPreference %>% arrange(desc(WeightedAverageRating))
+ModelPreference_top10 <-head(ModelPreference,10)
+ModelPreference_top10
+```
+
+#getting cleaned csv
+#write.csv(ModelPreference,"ModelPreference.csv", row.names = FALSE)
+#write.csv(ModelPreference_top10,"ModelPreference_top10.csv", row.names = FALSE)
+```{r}
+#Kia Sorento (ILS 117,266)
+kiasorento <- read_html("https://motowheeler.com/il/hybrid-cars/kia-sorento-plug-in-hybrid-sx-awd-2023-8946")
+kiasorento <- kiasorento %>% html_nodes("body") %>% html_table()
+kiasorento <- as.data.frame(kiasorento)
+
+#Jaguar F Type is not yet found in israel (coming soon)
+
+#Chevrolet Corvette Stingray (ILS 210,105)
+corvette<- read_html("https://motowheeler.com/il/cars/chevrolet-corvette-stingray-1lt-coupe-1098")
+corvette <- corvette %>% html_nodes("body") %>% html_table()
+corvette <- as.data.frame(corvette)
+
+#MINI Cooper Countryman (ILS 100,395)
+countryman <- read_html("https://motowheeler.com/il/cars/mini-cooper-countryman-2022-3464")
+countryman <- countryman %>% html_nodes("body") %>% html_table()
+countryman <- as.data.frame(countryman)
+
+#Subaru Outback (ILS 92,960)
+outback <- read_html("https://motowheeler.com/il/cars/subaru-outback-base-1556")
+outback <- outback %>% html_nodes("body") %>% html_table()
+outback <- as.data.frame(outback)
+
+#Porsche 911 (ILS 349,140)
+porsche <- read_html("https://motowheeler.com/il/cars/porsche-911-carrere-car-8239")
+porsche <- porsche %>% html_nodes("body") %>% html_table()
+porsche <- as.data.frame(porsche)
+
+#Mercedes C class
+C.class <- read_html("https://motowheeler.com/il/cars/mercedes-benz-c300-cabriolet-2023-6317")
+C.class <- C.class %>% html_nodes("body") %>% html_table()
+C.class <- as.data.frame(C.class)
+
+#Mini Cooper (ILS79,005)
+mini <- read_html("https://motowheeler.com/il/cars/mini-cooper-hardtop-2-door-2022-3592")
+mini <- mini %>% html_nodes("body") %>% html_table()
+mini <- as.data.frame(mini)
+
+#Jeep Wrangler JK (ILS 115,903)
+JK <- read_html("https://motowheeler.com/il/cars/jeep-wrangler-unlimited-willys-2022-5158")
+JK <- JK %>% html_nodes("body") %>% html_table()
+JK <- as.data.frame(JK)
+```
+# As the datasets in the original websites, the details for car models are too messy and cannot be cleaned and organized in R (messy structure and lack of data, etc.). We directly extract the csv files and clean them manually to generate those tables in the fleet recommendation tab.
+```{r}
+write.csv(kiasorento,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/kiasorento.csv",row.names = FALSE)
+write.csv(corvette,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/corvette.csv",row.names = FALSE)
+write.csv(countryman,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/countryman.csv",row.names = FALSE)
+write.csv(outback,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/outback.csv",row.names = FALSE)
+write.csv(porsche,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/porsche.csv",row.names = FALSE)
+write.csv(C.class,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/C.class.csv",row.names = FALSE)
+write.csv(mini,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/mini.csv",row.names = FALSE)
+write.csv(JK,"/Users/elianasong/Desktop/y3s1/DBA3702/Project/is data source/JK.csv",row.names = FALSE)
+```
