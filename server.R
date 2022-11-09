@@ -1094,28 +1094,28 @@ shinyServer(function(input, output) {
     df_models <- reactive({
       input$Model
       if(input$Model == "Kia Sorento"){            
-        df_models <- kiasorento
+        kiasorento
       }
       else if(input$Model == "Chevrolet Corvette Stingray"){
-        df_models <-corvette
+        corvette
       }
       else if(input$Model == "MINI Cooper Countryman"){
-        df_models <-countryman
+        countryman
       }
       else if(input$Model == "Subaru Outback"){
-        df_models <-outback
+        outback
       }
       else if(input$Model == "Porsche 911"){
-        df_models <-porsche
+        porsche
       }
       else if(input$Model == "Mercedes-benz C-Class"){
-        df_models <-C.class
+        C.class
       }
       else if(input$Model == "MINI Cooper"){
-        df_models <-mini
+        mini
       }
       else if(input$Model == "Jeep Wrangler JK"){
-        df_models <- JK
+        JK
       }
     })
     # basic info tab
