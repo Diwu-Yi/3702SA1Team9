@@ -118,7 +118,8 @@ top10models <- read.csv("data/ModelPreference_top10.csv")
 ggplot(top10models, aes(x = reorder(Model, WeightedAverageRating), y=WeightedAverageRating)) +
   geom_bar(stat='identity') + 
   labs(title = "Ratings of Suggested Vehicle Models", x= "Suggested Vehicles",y= "Ratings") +
-  theme(axis.text.x = element_text(angle = 90))+ 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  geom_text(aes(label = WeightedAverageRating), vjust = 1.5, colour = "white") +
   coord_cartesian(ylim = c(4.950, 5))
 ```
 
