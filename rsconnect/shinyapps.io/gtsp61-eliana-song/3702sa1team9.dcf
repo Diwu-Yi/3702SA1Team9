@@ -1,0 +1,14 @@
+name: 3702sa1team9
+title:
+username:
+account: gtsp61-eliana-song
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7572540
+bundleId: 6494220
+url: https://gtsp61-eliana-song.shinyapps.io/3702sa1team9/
+when: 1668007617.56953
+lastSyncTime: 1668007617.56954
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: datacleaning/data cleaning for all car models.Rmd|datacleaning/project_assignment.Rmd|SA1_Team9_Report_with_Business_Plan.Rmd

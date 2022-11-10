@@ -4,7 +4,13 @@ author: "SA1Team9"
 date: "2022-11-09"
 output: html_document
 ---
-
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(reshape2)
+library(tidyr)
+```
 # <b>DBA 3702 - Team 9, IntelliShare</b>
 ## <b>Introduction</b>
 ### <b>Background of Car Sharing</b>
@@ -81,7 +87,18 @@ Firstly, the ‘Shared Cars Locations' dataset used in our analysis is unbiased 
 
 Secondly, for the User Preference of Car Model Data, we assumed that users in the US and Tel Aviv exhibit the same taste and preferences toward car rental models as they exhibit similar purchasing power as seen with a similar GDP per capita. 
 
-Thirdly, for the Car Model Details Data, we assumed the prices to be fixed throughout the different platforms by taking the data from reliable websites. We acknowledge that there might be fluctuations in the prices of the car given the possibility of customization, but standardised the price alongside specific model details provided online
+```{r}
+US <- read.csv("data/united-states-gdp-per-capita.csv")
+Israel <- read.csv("data/israel-gdp-per-capita.csv")
+Global <- read.csv("data/world-gdp-per-capita.csv")
+all <- merge( merge(US, Israel, by = "date", all = TRUE ), Global, by = "date", all = TRUE )
+all <- all[,c(1,2,4,6)]%>%gather(key,value,-date)
+all$date <- dmy(all$date)
+ggplot(data=all, aes(x=date, y=value, group=key,color=key)) +
+  geom_line()
+```
+
+Thirdly, for the Car Model Details Data, we assumed the prices to be fixed throughout the different platforms by taking the data from reliable websites. We acknowledge that there might be fluctuations in the prices of the car given the possibility of customization, but standardised the price alongside specific model details provided online.
 
 ## <b>IntelliShare Application</b>
 ### <b>Home Tab</b>
