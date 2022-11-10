@@ -113,6 +113,15 @@ In this tab, the function serves as a cost-planning guide for car-sharing compan
 Given that Israel, a developed country, has the highest standard of living in the entire Middle East, IntelliShare's car model database uses the US urban car-sharing industry as a reference. 
 Considering that fuel cars are still in the mainstream, we chose fuel and hybrid cars as the target of examination. IntelliShare uses the weighted average of user ratings and usage times to filter the data and rank the ten preferred car models from highest to lowest. The car models were ranked as follows.
 
+```{r}
+top10models <- read.csv("data/ModelPreference_top10.csv")
+ggplot(top10models, aes(x = reorder(Model, WeightedAverageRating), y=WeightedAverageRating)) +
+  geom_bar(stat='identity') + 
+  labs(title = "Ratings of Suggested Vehicle Models", x= "Suggested Vehicles",y= "Ratings") +
+  theme(axis.text.x = element_text(angle = 90))+ 
+  coord_cartesian(ylim = c(4.950, 5))
+```
+
 Further, IntelliShare compiled information on the local Israeli car market, analysing and presenting the performance of each car model in terms of basic profile, tires, etc. Customers can select different car models from the options to get an idea of the car's appearance, car market offer, and the performance of the latest models. This allows the customer to gain an insight into the Israeli car market and to evaluate the local car purchase as a cost factor. 
 
 
@@ -165,6 +174,29 @@ We will seek to improve this aspect of the Intellishare application through poss
 
 ### <b>Incorporation of Electrical Car Datasets</b>
 As we move on, given the rising reliance on electric vehicles, we will look to integrate more electrical vehicle datasets. Also, as more and more companies use electrical vehicles around the world, more datasets are created. Therefore, we will be on the lookout to incorporate these data into our existing application to better serve the application. 
+
+### <b>Incorporation of Vehicle Age Tracking for Maintenance and End of Optimal Period of Use</b>
+```{r}
+vehicleyears_ratings <- read.csv("data/VehicleAge.csv")
+
+ggplot(vehicleyears_ratings, aes(x=vehicle.age, y=Avg.Rating), ) +
+  geom_line(stat = 'identity') + 
+  geom_point() + 
+  labs(title = "Relationship between Vehicle Age on Customer Rating/Satisfaction", x= "Vehicle Age",y= "Customer Rating")+
+  scale_x_continuous(breaks = seq(0, 15, by = 1)) +
+  scale_y_continuous(breaks = seq(4.80, 5.00, by = 0.02)) 
+```
+
+```{r}
+ggplot(vehicleyears_ratings, aes(x=vehicle.age, y=Avg.Rating), ) +
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE) +
+  labs(title = "Regression line between Vehicle Age on Customer Rating/Satisfaction", x= "Vehicle Age",y= "Customer Rating")+
+  scale_x_continuous(breaks = seq(0, 15, by = 1)) +
+  scale_y_continuous(breaks = seq(4.80, 5.00, by = 0.02)) 
+```
+
+Based on the graphs generated, we are able to see that there is a downward trend in the user experience with the increase of age of the vehicle. Therfore, by setting a threshold of 4.9 rating, companies should recall their cars when it hits the 8th year mark for servicing or potentially retire the car and replace it with a new one. 
 
 ## <b>References</b>
 
