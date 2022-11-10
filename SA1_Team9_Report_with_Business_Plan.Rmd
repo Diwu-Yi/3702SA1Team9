@@ -5,26 +5,161 @@ date: "2022-11-09"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# <b>DBA 3702 - Team 9, IntelliShare</b>
+## <b>Introduction</b>
+### <b>Background of Car Sharing</b>
+With the rise of the sharing economy, new modes and services of transport have emerged in recent years. A prominent example would be the birth of car-sharing, where users rent out cars for their own use across various durations. This service can be jointly seen as a form of mobility as a service, providing flexibility to the users at their convenience. 
 
-## R Markdown
+Based on a report by Mckinsey, the estimated global market size for car sharing pre-pandemic was $4-6 billion (Heineke et al., 2021). The report also indicated the current investments are around $3 billion, which pales in comparison with e-hailing investments. The gap in current investments can potentially lead to a huge opportunity cost in this market. To target this gap, we believe that more can be done to better serve the companies and customers of the car-sharing market. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This new mode of transport helps tackle the increasing concern about road congestion and climate change caused by the release of greenhouse gases. Environmental sustainability is key to the future, with many countries enacting policies and laws to help protect our environment and slow climate change. With this global goal, car-sharing nicely ties into the movement by curbing carbon emissions and air pollution by decreasing private vehicle ownership. This efficient and sustainable use of resources also represents an ideal of community building and is the way to the future. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### <b>Problem Statement</b>
+In recent years, there is a sharp increase in the motorization rate in Israel, with existing data showing that there are 400 cars for every 1000 residents. A large number of car owners highlight the pressing problem of congestion surrounding Israel, consequentially causing frustration to road users. In the big picture, the massive congestion causes substantial environmental and economic damage (Keller-Lynn et al., 2021). The city of Tel Aviv has implemented a congestion charge (Lieberman, 2021) to reduce the number of cars on the road and seeks to promote alternative modes of transport such as car-sharing. This shift away from private vehicle ownership has led to the emergence of multiple car-sharing companies in Tel Aviv. Currently, the car-sharing market in Tel Aviv is still evergreen, with an estimated revenue of US$74.54m in 2022 and an annual growth rate of 15.73%, reaching a market volume of US$133.70m by 2026 (Statista, 2022).  With this potential observed in the car-sharing landscape in Tel Aviv, our team is exploring ways to help companies enter the car-sharing market in Tel Aviv or existing car-sharing companies to increase their profits and better serve the community.
 
-```{r cars}
-summary(cars)
-```
+For car-sharing companies to enter or increase their market dominance in the Israel market,  they must consider factors such as market demand, optimization of their fleets to reduce costs, and expansion strategies.
 
-## Including Plots
+To start, car-sharing is an asset-heavy business, with the need to purchase vehicles for customers to use on demand. The cost of purchasing their fleet results in a high overhead cost for companies. As a result, companies require the insights to make an informed decision when buying their fleet. Such insights include determining the most appropriate vehicle for customer use while maintaining the necessary safety standards. The selection of a suitable fleet can help reduce costs while providing top-quality service, thus helping to retain existing customers and attract new ones on board. 
 
-You can also embed plots, for example:
+To add on, some of the pain points faced by car-sharing companies include finding appropriately located car park spots for customers and managing the fleet to better cater to the dynamic demand of the users. When not in use, these vehicles remain in the parking spaces for a certain amount of time and might create consequences like opportunity cost and negative externalities as the vehicle is not optimised and not used to its full potential. Therefore, companies would prefer to have their vehicles maximized, and to do so, they have to be parked at a favourable or convenient location for the consumers to use. Companies require insight as to where to have their cars located based on dynamic consumer behaviour and the hotspot locations to determine where to expand their car park lots.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+### <b>Background of IntelliShare</b>
+IntelliShare is an intuitive application for car-sharing companies to gain insights into their operations and demand and help them identify possible expansion strategies. It seeks to help car-sharing companies learn more about their market in Israel and how to best increase their profits. The application provides information regarding car-sharing demand in Israel, related operating costs, and possible expansion strategies. By focusing on the demand, supply, and expansion possibilities, these value-added services can help car-sharing companies grow. 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## <b>Data Preparation</b>
+While preparing the data sets, our team accessed CSV and JSON files across different sources. We crawled and cleaned the data sets on the car park availability, car models, user preferences, and user details on shared car usage.
+
+### <b>Shared Car Locations Data</b>
+One of the datasets we used is called ‘Shared Cars Locations' from Kaggle. The dataset contains the location of the parked shared cars every two minutes between December 2018 to January 2019 from the AutoTel website. AutoTel is the first car-sharing program launched in Tel Aviv, operated by Israeli company Car2Go, to reduce traffic and air pollution in crowded metropolises (Shemer, 2017). 
+
+We performed data cleaning on the file as each observation contains a list of the car's “names” which is a number. The ‘cars_list’ contains the ID number of the cars parked at the time and location recorded. There are many instances where there are multiple ID numbers in one observation, indicating multiple cars parked at that location. This restricts our analysis which requires a specific car, consequentially understating the demand if we were to derive demand based on several observations. Hence, we created a data frame where each observation is for a specific car and a journey. By doing this, it allows us to visualise the demand for cars, rather than car parks. In addition, our data cleaning also accounts for the small changes in locations which are possibly due to GPS errors. 
+ 
+Website: https://www.kaggle.com/datasets/gidutz/autotel-shared-car-locations
+
+### <b>Car Park Availability Data</b>
+Because the ‘Shared Cars Locations’ Data does not provide us with the dataset of car park availability, we have performed a simulation for the availability status. We sampled car park availability data from an official Singapore Government based website in the first two weeks of February. We downloaded the JSON files and used an open-source online converter to transform the files into CSV files. Furthermore, we sampled three different available ratios to ensure that the simulated data is realistic and appropriate. The 3 ratios samples are: the ratio of car parks being available on Weekends (Saturday and Sunday), the ratio of car parks being available on Weekdays (Monday to Friday) during peak hours (08:00 - 09:59 & 18:00 - 19:59), and lastly, a ratio of car parks being available during Weekdays off-peak hours (any time outside peak hours). As the seasonal effect is not observed, we did not sample the different months. 
+
+After the sampling and calculation, we simulated the availability of car parks in Tel Aviv, Israel, based on the above-stated filtering rules, applying only the correct ratio for each respective data point. It is worth noting that due to limitations of computational power and time, a full dataset containing 200,000 data points was produced. The simulated data set is stored in the “data/carpark/” folder of our source code file.
+R script file app-pre.R contains the codes used to crawl the data from a JSON file from Data.gov.sg
+ 
+Website: https://data.gov.sg/dataset/carpark-availability
+
+### <b>User Preference of Car Models Data</b>
+We used the “Cornel Car Rental Dataset” from Kaggle. The dataset is acquired in July 2020 for major US cities and shows the various popular car models in the various US cities.  
+
+We performed data cleaning on the file to only include the top-performing car models by weighing the average of user ratings and usage times to filter the data and rank the ten preferred car models from highest to lowest.
+
+Website: https://www.kaggle.com/datasets/kushleshkumar/cornell-car-rental-dataset
+
+### <b>Car Models Details Data</b>
+For this data, we web-crawled various websites to obtain information on the preferred car models derived from the User Preference Dataset mentioned above. We took note of the prices in the New Israeli Shekels currency and whether the car models are available for sale in Israel. 
+
+Websites:
+Kia Sorento - https://motowheeler.com/il/hybrid-cars/kia-sorento-plug-in-hybrid-sx-awd-2023-8946
+
+Chevrolet Corvette Stingray - 
+https://motowheeler.com/il/cars/chevrolet-corvette-stingray-1lt-coupe-1098
+
+Jaguar F-TYPE - Not Applicable 
+
+Mini Cooper Countryman - https://motowheeler.com/il/cars/mini-cooper-countryman-2022-3464
+
+Subaru Outback - https://motowheeler.com/il/cars/subaru-outback-base-1556
+
+Porsche 911 - https://motowheeler.com/il/cars/porsche-911-carrere-car-8239
+
+Mercedes C Class - https://motowheeler.com/il/cars/mercedes-benz-c300-cabriolet-2023-6317
+
+Mini Cooper - https://motowheeler.com/il/cars/jeep-wrangler-unlimited-willys-2022-5158
+
+Jeep Wrangler JK - https://motowheeler.com/il/cars/mini-cooper-hardtop-2-door-2022-3592
+
+### <b>Assumptions on Datasets</b>
+We made the following assumption in our analysis of the various datasets. 
+
+Firstly, the ‘Shared Cars Locations' dataset used in our analysis is unbiased and an accurate representation of the present trend in the car-sharing industry in Tel Aviv. Additionally, given that Tel Aviv does allocate parking spaces for drivers using the service (Shemer, 2017), we will be assuming that only shared cars can be parked at that specific location and other vehicles will not compete with the parking spaces.
+
+Secondly, for the User Preference of Car Model Data, we assumed that users in the US and Tel Aviv exhibit the same taste and preferences toward car rental models as they exhibit similar purchasing power as seen with a similar GDP per capita. 
+
+Thirdly, for the Car Model Details Data, we assumed the prices to be fixed throughout the different platforms by taking the data from reliable websites. We acknowledge that there might be fluctuations in the prices of the car given the possibility of customization, but standardised the price alongside specific model details provided online
+
+## <b>IntelliShare Application</b>
+### <b>Home Tab</b>
+The Home Tab contains the link to the other tabs and acts as an attractive and dynamic front page for users to access the various functions of the application. Also, it briefly describes the current car-sharing landscape in Tel Aviv. 
+
+### <b>Market Demand Analysis Tab</b>
+In this tab, car-sharing companies can also filter the demand for cars according to weekdays and weekends. The separation of the data into weekdays and weekends is to provide a clearer visualisation of when significant differences in demand are observed. The demand for cars is lesser on weekends. A possible reason for this is that people commonly rent cars to travel for work commuting while they rest and stay home on the weekends. Another reason could be that foreigners who need to rent a car travel to Israel on weekdays rather than weekends when flight tickets are more expensive. With this information, car-sharing companies are better able to optimise their fleet to cater to the dynamic demands of users through the use of this value-added feature. 
+
+### <b>Fleet Recommendation Tab</b>
+In this tab, the function serves as a cost-planning guide for car-sharing companies. Cost planning requires companies to consider the cost of purchase of cars as well as maintenance and repair, centralised vehicle and parking management and scheduling, other member service costs, operation and maintenance costs, etc. Among all the costs to be considered, this function will provide input on the purchase price of rental cars and their respective performance details of the various models that have proved to cater to the taste and preferences of the existing users. Also, IntelliShare will analyse and suggest systems for centralised car management and regular maintenance in the report.
+
+Given that Israel, a developed country, has the highest standard of living in the entire Middle East, IntelliShare's car model database uses the US urban car-sharing industry as a reference. 
+Considering that fuel cars are still in the mainstream, we chose fuel and hybrid cars as the target of examination. IntelliShare uses the weighted average of user ratings and usage times to filter the data and rank the ten preferred car models from highest to lowest. The car models were ranked as follows.
+
+Further, IntelliShare compiled information on the local Israeli car market, analysing and presenting the performance of each car model in terms of basic profile, tires, etc. Customers can select different car models from the options to get an idea of the car's appearance, car market offer, and the performance of the latest models. This allows the customer to gain an insight into the Israeli car market and to evaluate the local car purchase as a cost factor. 
+
+
+### <b>Available Car Parks Identification Tab</b>
+In this tab, the function allows car-sharing companies to identify the locations where the shared car services are in hot demand. Companies gain insights into the dynamic supply and demand for their vehicles to optimise their fleet management system. This enables them to ensure supply and demand are geospatially balanced, meaning cars are where and when required. With this feature, companies are equipped with the knowledge to maximise and optimise the productivity of their fleets, driving up profits and providing better service to the community. 
+
+An effective way to encourage consumers to adopt car sharing is to improve the accessibility of shared cars. To do so, IntelliShare App helps assess the locations where consumers frequently park shared cars. The number of shared cars parked at a particular location indicates the behaviour of consumers. The higher the density of shared cars parked, the higher the consumers' utilisation of shared cars in that area. Therefore, car-sharing companies can identify hotspots of car-sharing usage by consumers around the city. The companies will gain insights as to where to allocate more dedicated parking spaces in the indicated prime locations or identify shared cars that are most likely to be underutilised and relocate them to hotspot locations. This allows car-sharing companies to expand their operations by matching capacity and demand. This would help increase the availability and reduce the waiting time for shared cars in areas where demand for car sharing is high, making it more convenient for consumers to access the car-sharing service. Moreover, this helps to improve operational efficiency as it enhances the utilisation level of shared cars, potentially helping to expand operations with minimal purchase of new shared cars.
+
+Furthermore, we advise all car-sharing companies or firms planning to join the market in Tel Aviv to provide an accurate map-based browser for their customers as a value-added service. Doing so will elevate their market status and potentially enable them to harness a bigger market because the availability map will visually demonstrate their presence in the city. Furthermore, customers will drive with a clear mind knowing that they will not face difficulty finding a car park when they reach their destinations. It will also help the customers to allow them to decide how many car parks to select from as there is a trade-off between seeing more car parks and the time required to load all the places on the map. In this spirit, we provide an example application for car-sharing firms to provide to their customers in the  Availability of Carpark tab of the IntelliShare app. Car-sharing companies can directly recycle this tab of the app and simply load their own car park availability datasets to put the feature into production.
+
+### <b>About Tab</b>
+The About Tab gives a summary of the Intellishare application - the objective and the various functions. Diving into the different functions, with this tab, users are able to understand the purpose of the data provided and how to apply it in their various business functions. 
+
+## <b>Methodology of IntelliShare Business Plan</b>
+As part of the sharing economy, the development of car sharing has been closely watched and is considered one of the important trends in the future development of the automotive industry. Throughout the development of car sharing in Israel, successful operational models or management examples are absent. However, the market demand for car sharing is evident and steadily increasing over the years. There is still a need to explore new directions and reduce the various obstacles faced in the development process.
+
+To date, the industry is still exploring successful business models and finding ways to balance costs and benefits. Due to the high cost of car acquisition and the multiple costs of operation, vehicle maintenance, parking, and insurance costs, it is not easy to achieve profitability through rental income alone. Car-sharing companies have to look for ways to reduce costs and expand to serve a larger community. 
+
+There are 2 aspects to solving the vehicle cost problem - a cheaper fleet and efficient vehicle management. To minimise the cost of the fleet, companies can actively compare the various car models available. The efficient management of vehicles can also be done using the knowledge of the dynamic demand and supply at the different locations across all periods. This helps ensure optimal capacity at each parking location based on demand and supply. We also intend to provide some solutions to the problems of vehicle maintenance and management, safety and security, parking problems, and adaptation to the trend of electrification in the field of car sharing.
+
+We believe that another vital service all car-sharing companies should provide for their customers is viewing available car parks around their desired locations. This belief is driven by our analysis of customer behaviours, where we found out that customers generally dislike uncertainty. Therefore, by giving their customer live viewing functions of their desired endpoint, they can take charge of their driving experience and have full control as to where they can park with this information. One key reason for many to choose to pay for shared cars instead of owning one is the ownership costs including parking fees and time expenses on locating a parking lot. Thus, if existing car-sharing firms in Tel Aviv can solve this pain point of the customers, they will see an increase in revenue and market share. This links back to the “Check Car Park Availability” tab of our proposed one-stop solution for existing and potential car-sharing companies looking to enter the market or expand. Although this feature in the app does not directly contribute to the company's expansion strategies and cost-saving choice of the fleet, it helps their customers and thus indirectly benefits the growth and revenue in the long run. Additionally, they can recycle the tab and almost immediately provide this feature to their customers. The time difference the feature provides is also critical, especially in a relatively immature market.
+
+According to the data, companies can resolve the uneven distribution of cars and redistribute the supply of cars to the various locations relative to their demad. Excess cars can be relocated to stations that observe a shortage. In addition, the data would help companies to identify potential locations and opportunities for revenue. They could, for example, adjust prices so that it would be cheaper to park cars in high-demand areas or plan their maintenance program such that cars will be collected from high-supply-low-demand regions and returned to high-demand areas.
+
+Moreover, companies can identify an untapped market such as a cluster or a particular location that is observed to be a hotspot and a popular area for consumers but might lack sufficient parking spaces. Companies can also perform geo-targeting marketing when consumers are at a specific location.
+
+## <b>Limitations</b>
+Whilst creating the application, we faced certain limitations.
+
+### <b>Lack of Car Park Availability Data in Tel Aviv</b>
+There was a lack of car park availability data in Israel given that the dataset was available only as it is. This data is crucial in providing knowledge to car-sharing companies to aid their expansion strategies and for them to better serve their users. Hence, we had to perform a simulation of the availability status based on a dataset for Singapore, which might not accurately reflect the actual car park availability in Tel Aviv.
+
+
+### <b>Absence of Real-Time Updates</b>
+Due to the limited datasets available, we could not source out real-time datasets. Therefore, all the datasets we are using are historical data. Without a real-time update of the data sets, the insights provided may not keep up with the ever-changing market trend. 
+
+For example, the ‘Shared Cars Locations’ dataset consists of data collected for only two months, between December 2018 to January 2019. This is not the most current data available as the industry and consumer patterns might have been different today, compared to the period we analysed. Moreover, the data collected spanned over two months, which might not have accounted for seasonal factors that could change consumers' behaviours. Therefore these factors could impact the reliability of the insights drawn.
+However, the analysis garnered from these historical datasets is still crucial as it allows companies to at least have an idea of the different hotspots, the possible fleets, and their market demand, as opposed to not having this information at all and going into the market blind. 
+
+
+### <b>Fleet recommendations lack comprehensiveness</b>
+Based on our analysis of the dataset, we only considered the models for hybrid and fuel vehicles. We did not include electric vehicles as the Shared Car Park Locations in Israel dataset is only based on hybrid and fuel vehicles. We understand that more and more companies are turning to electrical vehicles for shared cars but recognised that there is still a big market for fuel and hybrid cars. 
+
+## <b>Further Enhancements & Improvements</b>
+### <b>Car Park Availability Data Mining</b>
+As discussed earlier, we performed a simulation for the car park availability status data. As a potential future work to further extend IntelliShare, we can perform data mining of the availability. One of the possible approaches is to estimate the average size and number of lots based on the maximum number of cars found in one spot. After obtaining the estimated maximum capacity, we can record and retrived each car park’s parked car throughout the day. Then, we calculate a ratio of the time of the day during which this particular carpark is available. Based on that ratio, we can obtain a more realistic availability status. Most importantly, this ratio is based on data from Tel Aviv itself instead of Singapore. 
+
+### <b>Collaboration with Other Companies</b>
+We will seek to improve this aspect of the Intellishare application through possible collaboration with other companies such as Waze, which is a company that provides satellite navigation software on devices that supports the Global Positioning System. Through this, we can know where our car-sharing users are and can get real-time updates on the demand and supply all across the country.
+
+### <b>Incorporation of Electrical Car Datasets</b>
+As we move on, given the rising reliance on electric vehicles, we will look to integrate more electrical vehicle datasets. Also, as more and more companies use electrical vehicles around the world, more datasets are created. Therefore, we will be on the lookout to incorporate these data into our existing application to better serve the application. 
+
+## <b>References</b>
+
+Car-sharing - israel: Statista market forecast. Statista. (n.d.). Retrieved November 9, 2022, from https://www.statista.com/outlook/mmo/shared-mobility/shared-rides/car-sharing/israel
+
+Heineke, K., Kloss, B., Möller, T., & Wiemuth, C. (2021, August 13). Shared mobility: Where it stands, where it's headed. McKinsey & Company. Retrieved November 9, 2022, from https://www.mckinsey.com/industries/automotive-and-assembly/our-insights/shared-mobility-where-it-stands-where-its-headed
+
+Keller-Lynn, C., staff, T. O. I., Sara Burnett, J. C. and W. W., Kampeas, R., Lapin, A., Fabian, E., Ap, Tress, L., Hajela, K. M. and D., Keller-Lynn, C., Gross, J. A., Winer, S., Bachner, M., Borschel-Dan, A., Siegal, T., Agencies, Obel, A., AP, S. S. and, Surkes, S., … Hajdenberg, J. (2021, December 8). It's the errands, not the commute: What's really driving Israel's traffic crisis. The Times of Israel. Retrieved November 9, 2022, from https://www.timesofisrael.com/its-the-errands-not-the-commute-whats-really-driving-israels-traffic-crisis/
+
+Lieberman, G. (2021, July 13). Govt reveals details of planned Tel Aviv Congestion Charge. Globes. Retrieved November 9, 2022, from https://en.globes.co.il/en/article-govt-reveals-details-of-tel-aviv-congestion-charge-1001377894 
+
+Shemer, S. (2017, September 10). Tel Aviv's Kicks Off AutoTel Car-Sharing. NoCamels. From https://nocamels.com/2017/09/tel-aviv-autotel-car-sharing/
+
+YWN Israel Desk – Jerusalem. (2019, November 5). Tel Aviv Is The 5th Most Congested City In The World. The Yeshiva World. From https://www.theyeshivaworld.com/news/headlines-breaking-stories/1797274/tel-aviv-is-the-5th-most-congested-city-in-the-world.html
+
