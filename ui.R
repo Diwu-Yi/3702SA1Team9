@@ -55,7 +55,9 @@ shinyUI(navbarPage(title = "IntelliShare",
                             sidebarLayout(
                               sidebarPanel(  
                                 radioButtons(inputId = "format",label="View Days",
-                                             choices = c("Weekday","Weekend"))
+                                             choices = c("Weekday","Weekend")),
+                                radioButtons(inputId = "format2",label="View Format",
+                                             choices = c("Point","Heatmap","Cluster"))
                               ),
                               
                               mainPanel (
@@ -64,6 +66,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                               
                             )
                    ),
+                   
                    # ----------------------------------
                    # tab panel 3 -  Fleet Recommendations Browser
                    tabPanel(div(img(src='images/car.png',
