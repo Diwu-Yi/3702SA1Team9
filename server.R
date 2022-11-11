@@ -265,11 +265,7 @@ shinyServer(function(input, output) {
                                radius = 5, 
                                clusterOptions = markerClusterOptions())
           }
-<<<<<<< HEAD
 
-=======
-          
->>>>>>> 63d492ee5d3f4c9051b969781bd92cf7fcd7467f
           else if (input$format2 == 'Heatmap')
           {
             m2 <- dbByCar %>% 
