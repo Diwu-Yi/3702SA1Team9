@@ -252,29 +252,92 @@ shinyServer(function(input, output) {
       output$demand <-renderLeaflet(
         
         {
-          if(input$format == 'Weekday') {
-            m2 <- dbByCar %>% 
-              filter(Is.Weekend == F ) %>% 
-              group_by(latitude, longitude) %>% 
-              summarise(weekday.demand = sum(total_cars)) %>% 
-              leaflet() %>% 
-              addTiles() %>%
-              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                               radius = 5, 
-                               clusterOptions = markerClusterOptions())
+          if(input$format == 'Weekday') 
+            {
+            if(input$format2 == 'Cluster')
+             {
+              m2 <- dbByCar %>% 
+                filter(Is.Weekend == F ) %>% 
+                group_by(latitude, longitude) %>% 
+                summarise(weekday.demand = sum(total_cars)) %>% 
+                leaflet() %>% 
+                addTiles() %>%
+                addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                                 radius = 5, 
+                                 clusterOptions = markerClusterOptions())
+              }
+              else if(input$format2 == 'Point')
+                {
+                m2 <- dbByCar %>% 
+                  filter(Is.Weekend == F ) %>% 
+                  group_by(latitude, longitude) %>% 
+                  summarise(weekday.demand = sum(total_cars)) %>% 
+                  leaflet() %>%
+                  addTiles() %>%
+                  addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                                   radius = 5,fillOpacity = 0.05,stroke=FALSE,
+                                   color="red")
+                 
+                }
+              else if (input$format2 == 'Heatmap')
+                {
+                m2 <- dbByCar %>% 
+                  filter(Is.Weekend == F ) %>% 
+                  group_by(latitude, longitude) %>% 
+                  summarise(weekday.demand = sum(total_cars)) %>% 
+                  leaflet() %>%
+                  addTiles() %>%
+                  addHeatmap(lng= ~longitude, lat= ~latitude,radius=8)
+                }
+              
+              else {print("Wrong format name")}
+          
+           }
+                 
+              
+             
+          else if (input$format == 'Weekend')
+          {
+            if(input$format2 == 'Cluster')
+            {
+              m2 <- dbByCar %>% 
+                filter(Is.Weekend == T ) %>% 
+                group_by(latitude, longitude) %>% 
+                summarise(weekday.demand = sum(total_cars)) %>% 
+                leaflet() %>% 
+                addTiles() %>%
+                addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                                 radius = 5, 
+                                 clusterOptions = markerClusterOptions())
+            }
+            else if(input$format2 == 'Point')
+            {
+              m2 <- dbByCar %>% 
+                filter(Is.Weekend == T ) %>% 
+                group_by(latitude, longitude) %>% 
+                summarise(weekday.demand = sum(total_cars)) %>%
+                leaflet %>%
+                addTiles() %>%
+                addCircleMarkers(lng = ~longitude, lat = ~latitude, 
+                                 radius = 5,fillOpacity = 0.05,stroke=FALSE,
+                                 color="red")
+              
+            }
+            else if (input$format2 == 'Heatmap')
+            {
+              m2 <- dbByCar %>% 
+                filter(Is.Weekend == T ) %>% 
+                group_by(latitude, longitude) %>% 
+                summarise(weekday.demand = sum(total_cars)) %>% 
+                leaflet() %>%
+                addTiles() %>%
+                addHeatmap(lng= ~longitude, lat= ~latitude,radius=8)
+            }
+            
+            else {print("Wrong format name")}
+            
           }
-          else if (input$format == 'Weekend'){
-            m2 <- dbByCar %>% 
-              filter(Is.Weekend == T ) %>% 
-              group_by(latitude, longitude) %>% 
-              summarise(weekend.demand = sum(total_cars)) %>% 
-              leaflet() %>% 
-              addTiles() %>%
-              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                               radius = 5, 
-                               clusterOptions = markerClusterOptions())
-          }
-          else {print("Wrong format name")}
+          
           m2 <- addProviderTiles(m2,"Esri.WorldImagery", group = "Esri")
           m2 <- addProviderTiles(m2,"Stamen.Toner", group = "Toner")
           m2 <- addProviderTiles(m2, "Stamen.TonerLite", group = "Toner Lite")
