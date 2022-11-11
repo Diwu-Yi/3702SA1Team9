@@ -135,7 +135,6 @@ shinyServer(function(input, output) {
        m<-leaflet(data = db_scaled) %>% addTiles() %>% setView(lat = latitude, lng = longitude, zoom = 12) %>%
          addHeatmap(lng= ~longitude, lat= ~latitude,radius=11,intensity=~total_cars)
 
-         
         
       }
       else if (input$mapFormat == 'Cluster'){
@@ -266,19 +265,7 @@ shinyServer(function(input, output) {
                                radius = 5, 
                                clusterOptions = markerClusterOptions())
           }
-          else if(input$format2 == 'Point')
-          {
-            m2 <- dbByCar %>% 
-              filter(Is.Weekend == F ) %>% 
-              group_by(latitude, longitude) %>% 
-              summarise(weekday.demand = sum(total_cars)) %>% 
-              leaflet() %>%
-              addTiles() %>%
-              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                               radius = 5,fillOpacity = 0.05,stroke=FALSE,
-                               color="red")
-            
-          }
+
           else if (input$format2 == 'Heatmap')
           {
             m2 <- dbByCar %>% 
@@ -310,19 +297,7 @@ shinyServer(function(input, output) {
                                radius = 5, 
                                clusterOptions = markerClusterOptions())
           }
-          else if(input$format2 == 'Point')
-          {
-            m2 <- dbByCar %>% 
-              filter(Is.Weekend == T ) %>% 
-              group_by(latitude, longitude) %>% 
-              summarise(weekday.demand = sum(total_cars)) %>%
-              leaflet %>%
-              addTiles() %>%
-              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                               radius = 5,fillOpacity = 0.05,stroke=FALSE,
-                               color="red")
-            
-          }
+
           else if (input$format2 == 'Heatmap')
           {
             m2 <- dbByCar %>% 
