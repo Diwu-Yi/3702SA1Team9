@@ -10,6 +10,7 @@ library(ggplot2)
 library(lubridate)
 library(reshape2)
 library(tidyr)
+library(leaflet)
 ```
 # <b>DBA 3702 - Team 9, IntelliShare</b>
 ## <b>Introduction</b>
