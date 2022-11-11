@@ -382,7 +382,7 @@ birth of car-sharing, where users rent out cars for their own use across
 various durations. This service can be jointly seen as a form of
 mobility as a service, providing flexibility to the users at their
 convenience.</p>
-<p>Based on a report by Mckinsey, the estimated global market size for
+<p>Based on a report by McKinsey, the estimated global market size for
 car sharing pre-pandemic was $4-6 billion (Heineke et al., 2021). The
 report also indicated the current investments are around $3 billion,
 which pales in comparison with e-hailing investments. The gap in current
@@ -702,9 +702,12 @@ car-sharing industry as a reference. Considering that fuel cars are
 still in the mainstream, we chose fuel and hybrid cars as the target of
 examination. IntelliShare uses the weighted average of user ratings and
 usage times to filter the data and rank the ten preferred car models
-from highest to lowest. The fleet choices from customer tastes makes
-car-sharing companies’ purchase more position-relevant and reduces car
-idle costs. The car models were ranked as follows.</p>
+from highest to lowest. By putting more of their fleet investment
+dollars toward the models of cars that customers prefer, car-sharing
+businesses may better reallocate their funds. It also helps cut down on
+the money wasted by types of cars that aren’t popular with buyers by
+keeping them from sitting idle. The car models were ranked as
+follows.</p>
 <pre class="r"><code>top10models &lt;- read.csv(&quot;data/ModelPreference_top10.csv&quot;)
 ggplot(top10models, aes(x = reorder(Model, WeightedAverageRating), y=WeightedAverageRating)) +
   geom_bar(stat=&#39;identity&#39;) + 
@@ -766,7 +769,7 @@ difference the feature provides is also critical, especially in a
 relatively immature market.</p>
 <p>According to the data, companies can resolve the uneven distribution
 of cars and redistribute the supply of cars to the various locations
-relative to their demad. Excess cars can be relocated to stations that
+relative to their demand. Excess cars can be relocated to stations that
 observe a shortage. In addition, the data would help companies to
 identify potential locations and opportunities for revenue. They could,
 for example, adjust prices so that it would be cheaper to park cars in
@@ -832,7 +835,7 @@ availability status data. As a potential future work to further extend
 IntelliShare, we can perform data mining of the availability. One of the
 possible approaches is to estimate the average size and number of lots
 based on the maximum number of cars found in one spot. After obtaining
-the estimated maximum capacity, we can record and retrived each car
+the estimated maximum capacity, we can record and retrieve each car
 park’s parked car throughout the day. Then, we calculate a ratio of the
 time of the day during which this particular carpark is available. Based
 on that ratio, we can obtain a more realistic availability status. Most
