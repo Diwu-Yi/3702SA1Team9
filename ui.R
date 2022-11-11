@@ -57,7 +57,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                                 radioButtons(inputId = "format",label="View Days",
                                              choices = c("Weekday","Weekend")),
                                 radioButtons(inputId = "format2",label="View Format",
-                                             choices = c("Point","Heatmap","Cluster"))
+                                             choices = c("Heatmap","Cluster"))
                               ),
                               
                               mainPanel (

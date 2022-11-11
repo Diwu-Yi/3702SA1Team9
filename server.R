@@ -266,19 +266,7 @@ shinyServer(function(input, output) {
                                radius = 5, 
                                clusterOptions = markerClusterOptions())
           }
-          else if(input$format2 == 'Point')
-          {
-            m2 <- dbByCar %>% 
-              filter(Is.Weekend == F ) %>% 
-              group_by(latitude, longitude) %>% 
-              summarise(weekday.demand = sum(total_cars)) %>% 
-              leaflet() %>%
-              addTiles() %>%
-              addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                               radius = 5,fillOpacity = 0.05,stroke=FALSE,
-                               color="red")
-            
-          }
+          
           else if (input$format2 == 'Heatmap')
           {
             m2 <- dbByCar %>% 
