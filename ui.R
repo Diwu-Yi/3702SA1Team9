@@ -189,7 +189,7 @@ shinyUI(navbarPage(title = "IntelliShare",
                                                align = "center"
                                       ),
                                       
-                                      br()
+                                      hr()
                                       
                             ),
                             
