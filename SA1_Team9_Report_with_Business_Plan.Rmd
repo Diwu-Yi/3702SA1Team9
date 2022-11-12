@@ -129,6 +129,7 @@ As part of the sharing economy, the development of car sharing has been closely 
 To date, the industry is still exploring successful business models and finding ways to balance costs and benefits. Due to the high cost of car acquisition and the multiple costs of operation, vehicle maintenance, parking, and insurance costs, it is not easy to achieve profitability through rental income alone. Car-sharing companies have to look for ways to reduce costs and expand market to serve a larger community. 
 
 ### <b>Operation Management</b>
+#### <b>Fleet Analysis for Purchase and Maintenance Costs</b>
 There are 2 aspects to solving the vehicle cost problem - a customer-preference-targeted fleet and efficient vehicle management.To minimise the cost of the fleet, companies can actively compare the various car models available. The efficient management of vehicles can also be done using the knowledge of the dynamic demand and supply at the different locations across all periods. This helps ensure optimal capacity at each parking location based on demand and supply. Given that Israel, a developed country, has the highest standard of living in the entire Middle East, IntelliShare's car model database uses the US urban car-sharing industry as a reference. Considering that fuel cars are still in the mainstream, we chose fuel and hybrid cars as the target of examination. IntelliShare uses the weighted average of user ratings and usage times to filter the data and rank the ten preferred car models from highest to lowest. By putting more of their fleet investment dollars toward the models of cars that customers prefer, car-sharing businesses may better reallocate their funds. It also helps cut down on the money wasted by types of cars that aren't popular with buyers by keeping them from sitting idle. The car models were ranked as follows. 
 
 ```{r}
@@ -163,29 +164,28 @@ ggplot(vehicleyears_ratings, aes(x=vehicle.age, y=Avg.Rating), ) +
   scale_y_continuous(breaks = seq(4.80, 5.00, by = 0.02)) 
 ```
 
-
-Another effective way to encourage consumers to adopt car sharing is to improve the accessibility of shared cars. This is done by assessing the locations where consumers frequently park shared cars. The number of shared cars parked at a particular location indicates the consumers demand for shared car service of. The higher the density of shared cars parked, the higher the consumers' utilisation of shared cars in that area. Therefore, car-sharing companies can identify hotspots of car-sharing usage by consumers around the city. The companies will gain insights as to where to allocate more dedicated parking spaces in the indicated prime locations or identify shared cars that are most likely to be underutilised and relocate them to hotspot locations. This allows car-sharing companies to expand their operations by matching capacity and demand. This would help increase the availability and reduce the waiting time for shared cars in areas where demand for car sharing is high, making it more convenient for consumers to access the car-sharing service. Moreover, this helps to improve operational efficiency as it enhances the utilisation level of shared cars, potentially helping to expand operations with minimal purchase of new shared cars.
+#### <b>Customer Studies for Operatons</b>
+The peak of demand happens around 2am while the lowest demand for cars occurs between 4am and 6am. Hence, we would suggest car sharing companies to make relocation arrangements between 4am and 6am. This would reduce the possible opportunity costs from losing customers during high-demand period. A possible reason for this phenomenon is that slightly past midnight, at around 2am, people might face difficultly in finding their transport home, for instance, public transport or taxis. Hence, the need to rent a car to get home. This also serves as an opportunity for car sharing companies to relocate cars, between 12am and 1am, which experiences lower demand, to places where high demand is expected at 2am. As a result of the surge in demand at 2am, the time frame following will see a decrease in demand as the group of people have reached home while others are still in sleep. It is also observed that there is no significant difference in the flow of demand between weekdays and weekends. However, car sharing companies can expect greater demand on weekdays as compared to weekends. Overall, this helps companies to better optimize their relocation strategy and improve operational efficiency as it enhances the utilisation level of shared cars, potentially helping to expand operations with minimal purchase of new shared cars.
 
 ```{r}
 dbByCar <- read.csv("data/dbByCar.csv")
-dbByCar %>% 
-  group_by(latitude, longitude) %>% 
-  leaflet() %>% 
-  addTiles() %>%
-  addCircleMarkers(lng = ~longitude, lat = ~latitude, 
-                   radius = 5, 
-                   clusterOptions = markerClusterOptions())
+dbByCar$Is.Weekend <- ifelse((dbByCar$Weekday)%in%c("Sat", "Sun"),T, F)
+dbByCar$Is.Weekend <- ifelse(dbByCar$Is.Weekend == T, "Weekend", "Weekday")
 
-
-
+dbByCar %>%
+  group_by(Is.Weekend, Hour, Weekday) %>% count(Hour) %>% 
+  ggplot(aes(x = Hour, y = n, colour = Is.Weekend)) +
+  theme_light() +
+  geom_line(stat = "identity") +
+  theme(legend.position = "bottom",
+        axis.text = element_text(color = "black", face = "bold")) +
+  labs(x = "Hour", y = "Total Demand", title="Daily Usage by Hour")
 ```
 
+### <b>Marketing Strategies</b>
+We believe that another vital service all car-sharing companies should provide for their customers is viewing available car parks around their desired locations. This belief is driven by our analysis of customer behaviours, where we found out that customers generally dislike uncertainty. Therefore, by giving their customer live viewing functions of their desired endpoint, they can take charge of their driving experience and have full control as to where they can park with this information. One key reason for many to choose to pay for shared cars instead of owning one is the ownership costs including parking fees and time expenses on locating a parking lot. Thus, if existing car-sharing firms in Tel Aviv can solve this pain point of the customers, they will see an increase in revenue and market share. This links back to the “Check Car Park Availability” tab of our proposed one-stop solution for existing and potential car-sharing companies looking to enter the market or expand. This is done by assessing the locations where consumers frequently park shared cars. The number of shared cars parked at a particular location indicates the consumers demand for shared car service of. The higher the density of shared cars parked, the higher the consumers’ utilisation of shared cars in that area. Although this feature in the app does not directly contribute to the company's expansion strategies and cost-saving choice of the fleet, it helps their customers and thus indirectly benefits the growth and revenue in the long run. Additionally, they can recycle the tab and almost immediately provide this feature to their customers. The time difference the feature provides is also critical, especially in a relatively immature market.
 
-
-### <b>Marketing Management</b>
-We believe that another vital service all car-sharing companies should provide for their customers is viewing available car parks around their desired locations. This belief is driven by our analysis of customer behaviours, where we found out that customers generally dislike uncertainty. Therefore, by giving their customer live viewing functions of their desired endpoint, they can take charge of their driving experience and have full control as to where they can park with this information. One key reason for many to choose to pay for shared cars instead of owning one is the ownership costs including parking fees and time expenses on locating a parking lot. Thus, if existing car-sharing firms in Tel Aviv can solve this pain point of the customers, they will see an increase in revenue and market share. This links back to the “Check Car Park Availability” tab of our proposed one-stop solution for existing and potential car-sharing companies looking to enter the market or expand. Although this feature in the app does not directly contribute to the company's expansion strategies and cost-saving choice of the fleet, it helps their customers and thus indirectly benefits the growth and revenue in the long run. Additionally, they can recycle the tab and almost immediately provide this feature to their customers. The time difference the feature provides is also critical, especially in a relatively immature market.
-
-According to the data, companies can resolve the uneven distribution of cars and redistribute the supply of cars to the various locations relative to their demand. Excess cars can be relocated to stations that observe a shortage. In addition, the data would help companies to identify potential locations and opportunities for revenue. They could, for example, adjust prices so that it would be cheaper to park cars in high-demand areas or plan their maintenance program such that cars will be collected from high-supply-low-demand regions and returned to high-demand areas.
+According to the data, companies can resolve the uneven distribution of cars and redistribute the supply of cars to the various locations relative to their demand. Excess cars can be relocated to stations that observe a shortage. In addition, the data would help companies to identify potential locations and opportunities for revenue. They could, for example, adjust prices so that it would be cheaper to park cars in high-demand areas or plan their maintenance program such that cars will be collected from high-supply-low-demand regions and returned to high-demand areas. This would help increase the availability and reduce the waiting time for shared cars in areas where demand for car sharing is high, making it more convenient for consumers to access the car-sharing service.
 
 Moreover, companies can identify an untapped market such as a cluster or a particular location that is observed to be a hotspot and a popular area for consumers but might lack sufficient parking spaces. Companies can also perform geo-targeting marketing when consumers are at a specific location.
 
