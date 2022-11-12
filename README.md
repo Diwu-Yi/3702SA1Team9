@@ -11,6 +11,8 @@
 
 https://github.com/Diwu-Yi/3702SA1Team9
 
+## Please See the bedded folder of Business_Plan_and_Report for SA1 Team9's Business Plan and Report for the Project.
+
 ## Below is the original README from the app gallery, Intelligentsia, note that the edition of keyring.R is NOT required to run IntelliShare
 
 ### Prerequisites
