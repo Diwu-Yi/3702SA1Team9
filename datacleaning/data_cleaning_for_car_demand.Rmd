@@ -1,0 +1,79 @@
+---
+title: "data cleaning for car demand"
+author: "Fiona"
+date: "2022-11-11"
+output: html_document
+---
+
+```{r}
+library(tidyverse) 
+library(lubridate)
+library(leaflet)
+library(dplyr)
+library(lubridate)
+library(jsonlite)
+library(rjson)
+library(ggplot2)
+```
+
+```{r}
+db=read.csv("2020_02_25.csv")
+sum(is.na(db)) #no na  value at all
+
+db = db %>% mutate(timestamp = as.POSIXct(timestamp)) %>% 
+      mutate(timestamp = timestamp + 3600*2, # local time
+             Hour = lubridate::hour(timestamp),
+             Minute = lubridate::minute(timestamp),
+             Weekday = lubridate::wday(timestamp, label = TRUE, abbr = T),
+             Month = lubridate::month(timestamp),
+             Year = lubridate::year(timestamp))
+
+db=(db[db$cars_list!="[]",]) 
+head(db)
+```
+
+```{r}
+# First we'll exchange the column "carsList" with up to 10 columns, one for each car in a spot
+dbcars <-  db %>% 
+    select(cars_list) %>% 
+    distinct() %>% 
+    mutate(cars = sub(cars_list, pattern = "\\[", replacement = "")) %>% 
+    mutate(cars = sub(cars, pattern = "\\]", replacement = "")) %>% 
+    separate(cars, sep = ",", into = c("car1", "car2", "car3", "car4", "car5", "car6", "car7", "car8", "car9", "car10"), fill = "right") %>% 
+    mutate_at(2:11, as.numeric)
+# And, let's have a list of all cars "names" (which is a number)
+CarsList <- (1:max(dbcars$car1, na.rm = T))[1:max(dbcars$car1, na.rm = T) %in% dbcars$car1]
+# While there are 261 cars, some numbers are not in use (probably anymore), and we'll find to have the last car as # 272
+
+# Now we can create a dataframe where each row is only for a specifc car, whose number will be in a new column: "Car"
+# Also, we don't need to have the data on each car every 2 minutes, as most of the day it does not move
+# So we'll have a row only for each change in location of a car
+
+
+dbByCar <- left_join(db, dbcars) %>% 
+   gather(CarI, Car, car1:car10)  %>% 
+   filter(!is.na(Car)) %>% 
+   group_by(Car) %>% 
+   arrange(timestamp) %>% 
+   # let's disregard small changes in location which are probably due to GPS errors
+   mutate(Delta = abs(latitude - lag(latitude, default = 0)) + 
+                    abs(longitude - lag(longitude, default = 0)) > 0.002) %>% 
+   mutate(
+       LastRideTime = ifelse(Delta == TRUE, as.numeric(difftime(timestamp, lag(timestamp), units = "mins")), 0) # assuming ride time = time car is not available in the db
+          ) %>% 
+   filter(Delta == TRUE) %>% # only take rows where the location changed
+   mutate(
+     StartTime = timestamp - 60*LastRideTime,
+     StartLng = lag(longitude), StartLat = lag(latitude),
+     Day = lubridate::day(StartTime)
+   ) %>% 
+   ungroup()
+
+# save into new csv
+write.csv(dbByCar,"dbByCar.csv")
+```
+
+
+
+
+
