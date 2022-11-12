@@ -183,10 +183,9 @@ shinyUI(navbarPage(title = "IntelliShare",
                                       ),
                                       
                                       fluidRow(column(3),
-                                               column(6,br(), br(), p("The Available Carparks Identification tab allows companies to identify locations where consumers 
-                                                                      frequently park shared cars, thus helping identify the hotspots. With the ease 
-                                                                      of identification, companies can plan their next move of expansion to the various hotspot areas, 
-                                                                      providing their service where it is most needed.",
+                                               column(6,br(), br(), p("The Available Carparks Identification tab allows customers to identify the nearest car parks available with ease.
+                                                                      We advise car-sharing companies to provide an accurate map-based browser for their customers as a value-added service, 
+                                                                      hence we provided an example application for reference which can be loaded with their own car park availability datasets. ",
                                                                       style= "text-align: justify; width:600px;font-weight:bold;font-size: 20px; color:#52595D")),
                                                column(3),
                                                align = "center"
