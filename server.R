@@ -1134,6 +1134,9 @@ shinyServer(function(input, output) {
       if(input$Model == "Kia Sorento"){            
         kiasorento
       }
+      else if(input$Model == "Jaguar F-TYPE"){
+        jaguar
+      }
       else if(input$Model == "Chevrolet Corvette Stingray"){
         corvette
       }

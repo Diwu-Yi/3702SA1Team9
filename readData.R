@@ -190,7 +190,7 @@ model <- Preference$Model
 kiasorento <- as.data.frame(read.csv("data/kiasorento.csv"))
 
 #Jaguar F Type is not yet found in israel (coming soon)
-
+jaguar <- read.csv("data/Jaguar.csv")
 #Chevrolet Corvette Stingray (ILS 210,105)
 corvette <- read.csv("data/corvette.csv")
 
