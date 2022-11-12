@@ -7,6 +7,10 @@
 3. Supply the directory name which contains the app (3702SA1Team9 if you did not rename the folder). 
 4. Wait for the app to load on your machine (takes up to a few minutes) and start exploring IntelliShare!
 
+## Github Repo Link for easy git clone of the app code:
+
+https://github.com/Diwu-Yi/3702SA1Team9
+
 ## Below is the original README from the app gallery, Intelligentsia, note that the edition of keyring.R is NOT required to run IntelliShare
 
 ### Prerequisites
